@@ -1,25 +1,55 @@
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { ProLayout } from '@ant-design/pro-components'
-import { Link, useLocation, useRoutes } from 'react-router-dom'
+import {
+  Avatar, Dropdown, Space, Typography,
+} from 'antd'
+import {
+  Link, useLocation, useNavigate, useRoutes,
+} from 'react-router-dom'
+import { RequireAuth, useAuth } from '@/context/AuthContext'
 import { route } from './route'
 
 function App() {
   const { pathname } = useLocation()
   const main = useRoutes(route.routes)
+  const { user, signout } = useAuth()
+  const navigate = useNavigate()
 
   return (
-    <ProLayout
-      layout="mix"
-      fixSiderbar
-      fixHeader
-      title="系统管理"
-      route={route}
-      location={{ pathname }}
-      menu={{ autoClose: false }}
-      menuItemRender={(item, dom) => <Link to={item.path}>{dom}</Link>}
-      className="min-vh-100"
-    >
-      {main}
-    </ProLayout>
+    <RequireAuth>
+      <ProLayout
+        layout="mix"
+        fixSiderbar
+        fixHeader
+        title="系统管理"
+        route={route}
+        location={{ pathname }}
+        menu={{ autoClose: false }}
+        menuItemRender={(item, dom) => <Link to={item.path}>{dom}</Link>}
+        actionsRender={() => [
+          <Dropdown
+            key="avatar"
+            menu={{
+              items: [
+                {
+                  key: 'signout',
+                  icon: <LogoutOutlined />,
+                  label: (<Typography.Link onClick={() => signout(() => navigate('/'))}>退出登录</Typography.Link>),
+                },
+              ],
+            }}
+          >
+            <Space>
+              <Avatar size="small" icon={<UserOutlined />} />
+              <Typography.Text>{user?.username}</Typography.Text>
+            </Space>
+          </Dropdown>,
+        ]}
+        className="min-vh-100"
+      >
+        {main}
+      </ProLayout>
+    </RequireAuth>
   )
 }
 

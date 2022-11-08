@@ -4,7 +4,7 @@ import {
   Avatar, Dropdown, Space, Typography,
 } from 'antd'
 import {
-  Link, useLocation, useNavigate, useRoutes,
+  Link, useLocation, useRoutes,
 } from 'react-router-dom'
 import { RequireAuth, useAuth } from '@/context/AuthContext'
 import { route } from './route'
@@ -13,7 +13,6 @@ function App() {
   const { pathname } = useLocation()
   const main = useRoutes(route.routes)
   const { user, signout } = useAuth()
-  const navigate = useNavigate()
 
   return (
     <RequireAuth>
@@ -34,14 +33,14 @@ function App() {
                 {
                   key: 'signout',
                   icon: <LogoutOutlined />,
-                  label: (<Typography.Link onClick={() => signout(() => navigate('/'))}>退出登录</Typography.Link>),
+                  label: (<Typography.Link onClick={signout}>退出登录</Typography.Link>),
                 },
               ],
             }}
           >
             <Space>
               <Avatar size="small" icon={<UserOutlined />} />
-              <Typography.Text>{user?.username}</Typography.Text>
+              <Typography.Text>{user?.nickname}</Typography.Text>
             </Space>
           </Dropdown>,
         ]}

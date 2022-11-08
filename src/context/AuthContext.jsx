@@ -19,20 +19,18 @@ function AuthProvider({ children }) {
   /**
    * 登录
    * @param {object} newUser
-   * @param {VoidFunction} callback
    */
-  const signin = (newUser, callback) => {
+  const signin = (newUser) => {
     setUser(newUser)
-    callback()
   }
 
   /**
    * 退出登录
-   * @param {VoidFunction} callback
    */
-  const signout = (callback) => {
+  const signout = () => {
     setUser(null)
-    callback()
+    sessionStorage.removeItem('tokenValue')
+    localStorage.removeItem('tokenValue')
   }
 
   const value = useMemo(() => ({ user, signin, signout }), [user])

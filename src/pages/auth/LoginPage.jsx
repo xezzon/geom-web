@@ -38,23 +38,21 @@ function LoginPage() {
 
   useTitle('登录', { restoreOnUnmount: true })
 
-  const login = (user) => {
-    loginApi(user)
-      .then(({ tokenName, tokenValue }) => {
-        localStorage.setItem('tokenName', tokenName)
-        if (user.autoLogin) {
-          setToken2(tokenValue)
-        } else {
-          setToken1(tokenValue)
-        }
-      })
-      .catch((reason) => {
-        console.log(reason)
-        reason.json?.()
-          .then(({ message }) => message)
-          .then(message.error)
-      })
-  }
+  const login = (user) => loginApi(user)
+    .then(({ tokenName, tokenValue }) => {
+      localStorage.setItem('tokenName', tokenName)
+      if (user.autoLogin) {
+        setToken2(tokenValue)
+      } else {
+        setToken1(tokenValue)
+      }
+    })
+    .catch((reason) => {
+      console.log(reason)
+      reason.json?.()
+        .then(({ message }) => message)
+        .then(message.error)
+    })
 
   if (user) {
     return <Navigate to={location.state?.from?.pathname || -1} replace />

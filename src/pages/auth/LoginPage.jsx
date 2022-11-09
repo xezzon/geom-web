@@ -1,29 +1,39 @@
 import { GithubOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
-import { LoginFormPage, ProFormCheckbox, ProFormText } from '@ant-design/pro-components'
 import {
-  useLocalStorageState, useRequest, useSessionStorageState, useTitle,
-} from 'ahooks'
-import { Button, Divider, Space } from 'antd'
-import { useEffect, useMemo } from 'react'
+  LoginFormPage,
+  ProFormCheckbox,
+  ProFormText,
+} from '@ant-design/pro-components'
+import { useLocalStorageState, useSessionStorageState, useTitle } from 'ahooks'
+import {
+  Button, Divider, Space, message,
+} from 'antd'
+import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
-import { getCurrentUser as getCurrentUserApi, login as loginApi } from '@/api/auth'
+import {
+  getCurrentUser as getCurrentUserApi,
+  login as loginApi,
+} from '@/api/auth'
+import { Fallback } from '@/hoc/Lazy'
 
 function LoginPage() {
   const location = useLocation()
   const { user, signin } = useAuth()
   const [token1, setToken1] = useSessionStorageState('tokenValue')
   const [token2, setToken2] = useLocalStorageState('tokenValue')
+  const [loading, toggleLoading] = useState(true)
   const token = useMemo(() => token2 || token1, [token1, token2])
-
-  const { runAsync: runGetCurrentUser } = useRequest(getCurrentUserApi, { manual: true })
 
   useEffect(() => {
     if (!token) {
-      return;
+      toggleLoading(false)
+      return
     }
-    runGetCurrentUser()
+    toggleLoading(true)
+    getCurrentUserApi()
       .then(signin)
+      .finally(() => toggleLoading(false))
   }, [token])
 
   useTitle('登录', { restoreOnUnmount: true })
@@ -38,13 +48,21 @@ function LoginPage() {
           setToken1(tokenValue)
         }
       })
+      .catch((reason) => {
+        console.log(reason)
+        reason.json?.()
+          .then(({ message }) => message)
+          .then(message.error)
+      })
   }
 
   if (user) {
     return <Navigate to={location.state?.from?.pathname || -1} replace />
   }
 
-  // TODO: 防闪烁
+  if (loading) {
+    return <Fallback />
+  }
 
   return (
     <div style={{ backgroundColor: 'white', height: '100vh' }}>
@@ -63,7 +81,9 @@ function LoginPage() {
             }}
           >
             <Divider plain>
-              <span style={{ color: '#CCC', fontWeight: 'normal', fontSize: 14 }}>
+              <span
+                style={{ color: '#CCC', fontWeight: 'normal', fontSize: 14 }}
+              >
                 其他登录方式
               </span>
             </Divider>

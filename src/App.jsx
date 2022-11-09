@@ -13,6 +13,7 @@ function App() {
   const { pathname } = useLocation()
   const main = useRoutes(route.routes)
   const { user, signout } = useAuth()
+  const permissions = user?.permissions
 
   return (
     <RequireAuth>
@@ -24,7 +25,10 @@ function App() {
         route={route}
         location={{ pathname }}
         menu={{ autoClose: false }}
-        menuItemRender={(item, dom) => <Link to={item.path}>{dom}</Link>}
+        menuItemRender={({ path }, dom) => (!permissions || permissions.includes(path)
+          ? <Link to={path}>{dom}</Link>
+          : null
+        )}
         actionsRender={() => [
           <Dropdown
             key="avatar"

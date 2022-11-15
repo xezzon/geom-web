@@ -25,7 +25,7 @@ const request = (config) => Promise.resolve(config)
     let { url, headers, body } = config
     url = `${baseURL}${config.url}`
     /* 解析 content-type 与 data */
-    if (!config.headers) {
+    if (!headers) {
       headers = {}
     }
     if (!headers['content-type']) {

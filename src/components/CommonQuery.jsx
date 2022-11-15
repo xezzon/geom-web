@@ -51,16 +51,17 @@ function CommonQuery({
    */
   const filterExpression = useMemo(() => {
     const expressions = filters
-      .filter(({ field }) => field)
-      .filter(({ operator }) => operator)
-      .filter(({ value }) => value)
+      .filter(({ field, operator }) => field && operator)
       .map(({
-        field, valueType, operator, value,
-      }) => `${field} ${operator === 'NNULL' ? 'NULL' : operator} ${valueExpress(value, valueType, operator)}`)
+        logic, field, valueType, operator, value,
+      }) => `${logic} ${field} ${operator === 'NNULL' ? 'NULL' : operator} ${valueExpress(value, valueType, operator)}`)
+      .join(' ')
+      .replace(/^(AND|OR)/, '')
+      .trim()
     if (foreignFilter) {
-      expressions.unshift(`(${foreignFilter})`)
+      return expressions ? `(${foreignFilter}) AND (${expressions})` : foreignFilter
     }
-    return expressions.join(' AND ')
+    return expressions
   }, [filters])
   /**
    * 排序表达式
@@ -106,7 +107,7 @@ function CommonQuery({
     <Popover
       title={(
         <div className="text-end">
-          <Button className="mx-1" onClick={() => push({})}>
+          <Button className="mx-1" onClick={() => push({ logic: 'AND' })}>
             新增
           </Button>
           <Button className="mx-1" onClick={() => resetList([])}>
@@ -142,10 +143,18 @@ function CommonQuery({
 }
 
 /**
+ * @typedef Filter
+ * @property {string} logic
+ * @property {string} field
+ * @property {string} operator
+ * @property {string} value
+ * @property {Filter[]} children
+ */
+/**
  *
  * @param {object} props
  * @param {import("antd/lib/table").ColumnProps[]} props.columns
- * @param {{ field: string, type: string, operator: string, value: string }[]} props.filters
+ * @param {Filter[]} props.filters
  * @param {Function} props.getKey
  * @param {Function} props.onChange
  * @param {Function} props.onRemove
@@ -236,11 +245,27 @@ function FilterList({
   return (
     <>
       {filters.map(({
-        field, valueType, operator, value,
+        logic, field, valueType, operator, value,
       }, index) => (
         <Row gutter={16} key={getKey(index)} className="my-2">
+          <Col span={3}>
+            <div style={{ display: index === 0 ? 'none' : '' }}>
+              <Select
+                value={logic}
+                options={[
+                  { value: 'AND', label: '且' },
+                  { value: 'OR', label: '或' },
+                ]}
+                placeholder="逻辑"
+                className="mx-1 w-100"
+                onChange={(logic) => onChange(index, {
+                  logic, field, valueType, operator, value,
+                })}
+              />
+            </div>
+          </Col>
           {/* 查询字段 */}
-          <Col span={7}>
+          <Col span={5}>
             <Select
               value={field}
               options={columns
@@ -254,9 +279,8 @@ function FilterList({
               }}
               placeholder="列名"
               allowClear
-              className="mx-1"
-              style={{ width: '100%' }}
-              onChange={(field) => onChange(index, { field, valueType: getType(field) })}
+              className="mx-1 w-100"
+              onChange={(field) => onChange(index, { logic, field, valueType: getType(field) })}
             />
           </Col>
           {/* 操作符 */}
@@ -265,16 +289,15 @@ function FilterList({
               value={operator}
               options={operators.filter(({ valueTypes }) => valueTypes.includes(valueType))}
               placeholder="条件"
-              className="mx-1"
+              className="mx-1 w-100"
               disabled={!field}
-              style={{ width: '100%' }}
               onChange={(operator) => onChange(index, {
-                field, valueType, operator, value,
+                logic, field, valueType, operator, value,
               })}
             />
           </Col>
           {/* 查询值 */}
-          <Col span={10}>
+          <Col span={8}>
             <div style={{ display: ['NULL', 'NNULL'].includes(operator) ? 'none' : '' }}>
               <ProField
                 value={value}
@@ -289,9 +312,9 @@ function FilterList({
                   unCheckedChildren: getOptions(field)?.unCheckedChildren,
                 }}
                 mode="edit"
-                className="d-none"
-                style={{ width: '100%' }}
+                className="w-100"
                 onChange={(e) => onChange(index, {
+                  logic,
                   field,
                   valueType,
                   operator,
@@ -302,8 +325,13 @@ function FilterList({
 
           </Col>
           {/* 操作列 */}
-          <Col span={2}>
-            <Button type="text" icon={<CloseOutlined />} onClick={() => onRemove(index)} />
+          <Col span={1}>
+            <Button
+              type="text"
+              icon={<CloseOutlined />}
+              size="small"
+              onClick={() => onRemove(index)}
+            />
           </Col>
         </Row>
       ))}

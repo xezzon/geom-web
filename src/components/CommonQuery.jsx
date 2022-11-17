@@ -1,8 +1,8 @@
-import { CloseOutlined, FilterOutlined } from '@ant-design/icons'
+import { CloseOutlined, FilterOutlined, PlusOutlined } from '@ant-design/icons'
 import { ProField } from '@ant-design/pro-components'
-import { useCounter, useDynamicList } from 'ahooks'
+import { useUpdate, useCounter, useDynamicList } from 'ahooks'
 import {
-  Button, Col, Popover, Row, Select,
+  Space, Button, Col, Popover, Row, Select,
 } from 'antd'
 import {
   forwardRef, useEffect, useImperativeHandle, useMemo,
@@ -39,7 +39,31 @@ function CommonQuery({
     }
     return `'${value}'`
   }
+  /**
+   * 筛选器转为表达式
+   * @param {Filter[]} filters
+   * @returns {string}
+   */
+  const filterExpress = (filters) => filters
+    .filter(({ field, operator }) => field && operator)
+    .map(({
+      logic, field, valueType, operator, value, children,
+    }) => {
+      if (children?.length) {
+        return `${logic} (${filterExpress([{
+          logic, field, valueType, operator, value,
+        }, ...children])})`
+      }
+      return `${logic} ${field} ${operator === 'NNULL' ? 'NULL' : operator} ${valueExpress(value, valueType, operator)}`
+    })
+    .join(' ')
+    .replace(/^(AND|OR)/, '')
+    .trim()
 
+  /**
+   * 触发查询
+   */
+  const [querySignal, { inc: search }] = useCounter(0)
   /**
    * 筛选器
    */
@@ -50,19 +74,12 @@ function CommonQuery({
    * 筛选表达式
    */
   const filterExpression = useMemo(() => {
-    const expressions = filters
-      .filter(({ field, operator }) => field && operator)
-      .map(({
-        logic, field, valueType, operator, value,
-      }) => `${logic} ${field} ${operator === 'NNULL' ? 'NULL' : operator} ${valueExpress(value, valueType, operator)}`)
-      .join(' ')
-      .replace(/^(AND|OR)/, '')
-      .trim()
+    const expression = filterExpress(filters)
     if (foreignFilter) {
-      return expressions ? `(${foreignFilter}) AND (${expressions})` : foreignFilter
+      return expression ? `(${foreignFilter}) AND (${expression})` : foreignFilter
     }
-    return expressions
-  }, [filters])
+    return expression
+  }, [filters, querySignal])
   /**
    * 排序表达式
    */
@@ -85,13 +102,9 @@ function CommonQuery({
     }),
     [filterExpression, sortExpression, pagination?.current, pagination?.pageSize],
   )
-  /**
-   * 触发查询
-   */
-  const [querySignal, { inc: search }] = useCounter(0)
 
   useEffect(() => {
-    console.debug(queryParam)
+    console.debug(filters, queryParam)
     onQuery(queryParam)
   }, [querySignal, foreignFilter, sorter, pagination?.current, pagination?.pageSize])
 
@@ -107,7 +120,7 @@ function CommonQuery({
     <Popover
       title={(
         <div className="text-end">
-          <Button className="mx-1" onClick={() => push({ logic: 'AND' })}>
+          <Button className="mx-1" onClick={() => push({ logic: 'AND', level: 0, children: [] })}>
             新增
           </Button>
           <Button className="mx-1" onClick={() => resetList([])}>
@@ -242,98 +255,128 @@ function FilterList({
    */
   const getOptions = (field) => columns.find(({ dataIndex }) => dataIndex === field)?.options
 
+  const forceUpdate = useUpdate()
+
   return (
     <>
-      {filters.map(({
-        logic, field, valueType, operator, value,
-      }, index) => (
-        <Row gutter={16} key={getKey(index)} className="my-2">
-          <Col span={3}>
-            <div style={{ display: index === 0 ? 'none' : '' }}>
+      {filters.map((filter, index) => (
+        <div key={getKey(index)}>
+          <Row gutter={16} className="my-2" style={{ marginLeft: `${filter.level * 2}rem` }}>
+            <Col span={3}>
               <Select
-                value={logic}
+                value={filter.logic}
                 options={[
                   { value: 'AND', label: '且' },
                   { value: 'OR', label: '或' },
                 ]}
                 placeholder="逻辑"
+                disabled={index + filter.level === 0}
                 className="mx-1 w-100"
-                onChange={(logic) => onChange(index, {
-                  logic, field, valueType, operator, value,
-                })}
+                onChange={(logic) => onChange(index, { ...filter, logic })}
               />
-            </div>
-          </Col>
-          {/* 查询字段 */}
-          <Col span={5}>
-            <Select
-              value={field}
-              options={columns
-                .filter(({ dataIndex }) => dataIndex)
-                .filter(({ hideInSearch }) => !hideInSearch)
-                .filter(({ valueType }) => valueType)}
-              fieldNames={{
-                value: 'dataIndex',
-                label: 'title',
-                options: 'children',
-              }}
-              placeholder="列名"
-              allowClear
-              className="mx-1 w-100"
-              onChange={(field) => onChange(index, { logic, field, valueType: getType(field) })}
-            />
-          </Col>
-          {/* 操作符 */}
-          <Col span={5}>
-            <Select
-              value={operator}
-              options={operators.filter(({ valueTypes }) => valueTypes.includes(valueType))}
-              placeholder="条件"
-              className="mx-1 w-100"
-              disabled={!field}
-              onChange={(operator) => onChange(index, {
-                logic, field, valueType, operator, value,
-              })}
-            />
-          </Col>
-          {/* 查询值 */}
-          <Col span={8}>
-            <div style={{ display: ['NULL', 'NNULL'].includes(operator) ? 'none' : '' }}>
-              <ProField
-                value={value}
-                valueType={valueType}
-                fieldProps={{
-                  options: getOptions(field),
-                  fieldNames: valueType === 'select' ? { value: 'code' } : undefined,
-                  mode: 'multiple',
-                  disabled: !field,
-                  placeholder: '查询值',
-                  checkedChildren: getOptions(field)?.checkedChildren,
-                  unCheckedChildren: getOptions(field)?.unCheckedChildren,
+            </Col>
+            {/* 查询字段 */}
+            <Col span={5}>
+              <Select
+                value={filter.field}
+                options={columns
+                  .filter(({ dataIndex }) => dataIndex)
+                  .filter(({ hideInSearch }) => !hideInSearch)
+                  .filter(({ valueType }) => valueType)}
+                fieldNames={{
+                  value: 'dataIndex',
+                  label: 'title',
+                  options: 'children',
                 }}
-                mode="edit"
-                className="w-100"
-                onChange={(e) => onChange(index, {
-                  logic,
+                placeholder="列名"
+                allowClear
+                className="mx-1 w-100"
+                onChange={(field) => onChange(index, {
+                  ...filter,
                   field,
-                  valueType,
-                  operator,
-                  value: ['text'].includes(valueType) ? e.target.value : e,
+                  valueType: getType(field),
+                  operator: null,
+                  value: null,
                 })}
               />
-            </div>
+            </Col>
+            {/* 操作符 */}
+            <Col span={5}>
+              <Select
+                value={filter.operator}
+                options={operators.filter(
+                  ({ valueTypes }) => valueTypes.includes(filter.valueType),
+                )}
+                placeholder="条件"
+                className="mx-1 w-100"
+                disabled={!filter.field}
+                onChange={(operator) => onChange(index, { ...filter, operator })}
+              />
+            </Col>
+            {/* 查询值 */}
+            <Col span={8}>
+              <div style={{ display: ['NULL', 'NNULL'].includes(filter.operator) ? 'none' : '' }}>
+                <ProField
+                  value={filter.value}
+                  valueType={filter.valueType}
+                  fieldProps={{
+                    options: getOptions(filter.field),
+                    fieldNames: filter.valueType === 'select' ? { value: 'code' } : undefined,
+                    mode: 'multiple',
+                    disabled: !filter.field,
+                    placeholder: '查询值',
+                    checkedChildren: getOptions(filter.field)?.checkedChildren,
+                    unCheckedChildren: getOptions(filter.field)?.unCheckedChildren,
+                  }}
+                  mode="edit"
+                  className="w-100"
+                  onChange={(e) => onChange(index, {
+                    ...filter,
+                    value: ['text'].includes(filter.valueType) ? e.target.value : e,
+                  })}
+                />
+              </div>
 
-          </Col>
-          {/* 操作列 */}
-          <Col span={1}>
-            <Button
-              type="text"
-              icon={<CloseOutlined />}
-              size="small"
-              onClick={() => onRemove(index)}
-            />
-          </Col>
-        </Row>
+            </Col>
+            {/* 操作列 */}
+            <Col span={1}>
+              <Space.Compact>
+                <Button
+                  type="text"
+                  icon={<PlusOutlined />}
+                  size="small"
+                  onClick={() => onChange(index, {
+                    ...filter,
+                    children: [...filter.children, {
+                      logic: 'AND',
+                      level: filter.level + 1,
+                      children: [],
+                    }],
+                  })}
+                />
+                <Button
+                  type="text"
+                  icon={<CloseOutlined />}
+                  size="small"
+                  onClick={() => onRemove(index)}
+                />
+              </Space.Compact>
+            </Col>
+          </Row>
+          <FilterList
+            columns={columns}
+            filters={filter.children}
+            getKey={(i) => i}
+            onChange={(i, data) => {
+              filter.children.splice(i, 1, data)
+              forceUpdate()
+            }}
+            onRemove={(i) => {
+              filter.children.splice(i, 1)
+              forceUpdate()
+            }}
+          />
+        </div>
       ))}
       <Button type="link" className="d-none">
         高级模式

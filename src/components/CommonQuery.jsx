@@ -79,7 +79,7 @@ function CommonQuery({
       return expression ? `(${foreignFilter}) AND (${expression})` : foreignFilter
     }
     return expression
-  }, [filters, querySignal])
+  }, [filters, foreignFilter, querySignal])
   /**
    * 排序表达式
    */

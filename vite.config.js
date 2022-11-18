@@ -8,25 +8,6 @@ export default ({ mode }) => {
    * @type {Record<string, string>}
    */
   const env = loadEnv(mode, process.cwd())
-  /**
-   * @type {Record<string, Record<string, string | import("vite").ProxyOptions>}
-   */
-  const proxy = {
-    development: {
-      '/api': {
-        target: `${env.VITE_ADMIN_SERVER}`,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
-    mock: {
-      '/api': {
-        target: 'http://127.0.0.1:4523/m1/615240-0-default',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
-  }
 
   return defineConfig({
     plugins: [react()],
@@ -44,7 +25,13 @@ export default ({ mode }) => {
       },
     },
     server: {
-      proxy: proxy[mode] || {},
+      proxy: {
+        '/api': {
+          target: env.VITE_ADMIN_SERVER || 'http://localhost:8080',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
     },
   })
 }

@@ -1,3 +1,4 @@
+import qs from 'qs'
 import { redirect } from 'react-router-dom'
 
 /**
@@ -23,9 +24,23 @@ const request = (config) => Promise.resolve(config)
   .then((config) => {
     const baseURL = '/api'
     let { url, headers, body } = config
-    url = `${baseURL}${config.url}`
+    /* 组装 baseUrl */
+    url = `${config.baseURL || baseURL}${config.url}`
+    /* 解析查询参数 */
+    let searchParams = ''
+    if (config.params) {
+      searchParams += config.url.includes('?') ? '&' : '?'
+      searchParams += qs.stringify(config.params, {
+        arrayFormat: 'comma',
+        allowDots: true,
+        format: 'RFC1738',
+        encoder: encodeURI,
+      })
+      console.debug(searchParams)
+    }
+    url = `${url}${searchParams}`
     /* 解析 content-type 与 data */
-    if (!config.headers) {
+    if (!headers) {
       headers = {}
     }
     if (!headers['content-type']) {

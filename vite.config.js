@@ -19,15 +19,12 @@ export default ({ mode }) => {
     },
     css: {
       preprocessorOptions: {
-        less: {
-          javascriptEnabled: true,
-        },
       },
     },
     server: {
       proxy: {
         '/api': {
-          target: env.VITE_ADMIN_SERVER || 'http://localhost:8080',
+          target: env.VITE_ADMIN_SERVER,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },

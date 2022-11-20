@@ -57,7 +57,7 @@ function LoginPage() {
   }
 
   if (user) {
-    return <Navigate to={location.state?.from?.pathname || -1} replace />
+    return <Navigate to={location.state?.from?.pathname ?? -1} replace />
   }
 
   if (loading) {

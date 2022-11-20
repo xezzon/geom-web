@@ -25,7 +25,7 @@ const request = (config) => Promise.resolve(config)
     const baseURL = '/api'
     let { url, headers, body } = config
     /* 组装 baseUrl */
-    url = `${config.baseURL || baseURL}${config.url}`
+    url = `${config.baseURL ?? baseURL}${config.url}`
     /* 解析查询参数 */
     let searchParams = ''
     if (config.params) {

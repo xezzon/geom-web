@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <>
     <AuthProvider>
       {/* eslint-disable-next-line no-underscore-dangle */}
-      <Router basename={window.__MICRO_APP_BASE_ROUTE__ || '/'}>
+      <Router basename={window.__MICRO_APP_BASE_ROUTE__ ?? '/'}>
         <Routes>
           <Route path="*" element={<App />} />
           <Route path="/login" element={<LoginPage />} />

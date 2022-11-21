@@ -36,7 +36,6 @@ const request = (config) => Promise.resolve(config)
         format: 'RFC1738',
         encoder: encodeURI,
       })
-      console.debug(searchParams)
     }
     url = `${url}${searchParams}`
     /* 解析 content-type 与 data */

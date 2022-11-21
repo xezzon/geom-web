@@ -104,7 +104,6 @@ function CommonQuery({
   )
 
   useEffect(() => {
-    console.debug(filters, queryParam)
     onQuery(queryParam)
   }, [querySignal, foreignFilter, sorter, pagination?.current, pagination?.pageSize])
 
@@ -290,13 +289,15 @@ function FilterList({
                 }}
                 placeholder="列名"
                 allowClear
+                showSearch
+                filterOption={(input, option) => (option?.title ?? '').toLowerCase().includes(input.toLowerCase())}
                 className="mx-1 w-100"
                 onChange={(field) => onChange(index, {
                   ...filter,
                   field,
                   valueType: getType(field),
-                  operator: null,
-                  value: null,
+                  operator: undefined,
+                  value: undefined,
                 })}
               />
             </Col>

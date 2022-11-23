@@ -1,12 +1,15 @@
 import { useRequest } from 'ahooks'
-import { Spin, Table, Space } from 'antd'
+import {
+  Spin, Table, Space, Button,
+} from 'antd'
 import {
   useRef, useState, useImperativeHandle, forwardRef,
 } from 'react'
+import { PlusOutlined } from '@ant-design/icons'
 import { list as fetchListApi } from '@/api/public-api'
 import CommonQuery from '@/components/CommonQuery'
 
-function PublicApiList({ type }, ref) {
+function PublicApiList({ type, onEdit }, ref) {
   /**
    * 列表数据
    */
@@ -87,13 +90,16 @@ function PublicApiList({ type }, ref) {
    * 对外暴露接口
    */
   useImperativeHandle(ref, () => ({
-    refresh: () => commonQuery.current.refresh(),
+    refresh: () => commonQuery.current.search(),
   }))
 
   const Toolbar = () => (
     <div className="d-flex justify-content-between">
       <div />
       <Space>
+        <Button type="primary" icon={<PlusOutlined />} onClick={onEdit({ type }, 'edit')}>
+          新增
+        </Button>
         <CommonQuery
           columns={columns}
           filter={`type EQ '${type}'`}

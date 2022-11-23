@@ -32,3 +32,16 @@ export async function list(params = {}) {
     params,
   }).then((response) => response.json())
 }
+
+/**
+ * 新增
+ * @param {PublicApi} record
+ * @returns {Promise<void>}
+ */
+export async function add(record) {
+  return request({
+    url: '/public-api',
+    method: METHOD.POST,
+    body: record,
+  })
+}

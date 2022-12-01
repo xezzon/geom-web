@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { redirect } from 'react-router-dom'
+import { tokenRequestInterceptor, unauthorizedResponseInterceptor } from './interceptors';
 
 /**
  * Enum for HTTP Request Method
@@ -17,66 +17,206 @@ const METHOD = {
 }
 
 /**
- * 封装 fetch 请求
- * @param {RequestInfo | { url: string, method: METHOD }} config
+ * @typedef InstanceConfig 请求实例配置
+ * @property {string} baseURL 基础路径 请求地址为URI时有效
+ * @property {RequestHeaders} headers 请求头
+ * @property {(params: object) => string} paramsSerializer params序列化方法
+ * @property {(data: any, headers: RequestHeaders) => any} transformRequest 拦截并修改请求体/请求头
+ * @property {(data: Response) => any} transformResponse 拦截并修改响应
  */
-const request = (config) => Promise.resolve(config)
-  .then((config) => {
-    const baseURL = '/api'
-    let { url, headers, body } = config
-    /* 组装 baseUrl */
-    url = `${config.baseURL ?? baseURL}${config.url}`
-    /* 解析查询参数 */
-    let searchParams = ''
-    if (config.params) {
-      searchParams += config.url.includes('?') ? '&' : '?'
-      searchParams += qs.stringify(config.params, {
-        arrayFormat: 'comma',
-        allowDots: true,
-        format: 'RFC1738',
-        encoder: encodeURI,
+/**
+ * @typedef RequestConfig 请求配置
+ * @type { InstanceConfig | RequestInfo }
+ */
+
+/**
+ * 默认配置
+ * @type {InstanceConfig}
+ */
+const defaultConfig = {
+  baseURL: '/api',
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8',
+  },
+  paramsSerializer: (params = {}) => qs.stringify(params, {
+    arrayFormat: 'comma',
+    allowDots: true,
+    format: 'RFC1738',
+    encoder: encodeURI,
+  }),
+  transformRequest: (data, headers = {}) => {
+    if (headers['Content-Type']?.includes('application/json')) {
+      return JSON.stringify(data)
+    }
+    return data
+  },
+  transformResponse: (data) => data.json(),
+}
+
+/**
+ * 拦截器组
+ */
+class Interceptors {
+  constructor() {
+    this.resolvers = []
+  }
+
+  // eslint-disable-next-line no-underscore-dangle
+  static _EMPTY_FUNCTION() {}
+
+  /**
+   * 新增拦截器
+   * @param {Function} resolver
+   */
+  use(resolver) {
+    if (!(resolver instanceof Function)) {
+      return _EMPTY_FUNCTION
+    }
+    if (!this.resolvers.includes(resolver)) {
+      this.resolvers.push(resolver)
+    }
+    return resolver
+  }
+
+  /**
+   * 移除拦截器
+   * @param {object} resolver
+   */
+  eject(resolver) {
+    const index = this.resolvers.findIndex((item) => item === resolver)
+    this.resolvers.splice(index, 1)
+  }
+
+  exec(initialValue) {
+    return this.resolvers.reduce((pre, curr) => curr(pre), initialValue)
+  }
+}
+
+class RequestUrl {
+  /**
+   *
+   * @param {u} uri
+   * @param {*} baseURL
+   * @param {*} params
+   * @param {*} paramsSerializer
+   */
+  constructor({
+    url, baseURL, params, paramsSerializer,
+  }) {
+    this.url = url
+    this.baseURL = baseURL
+    this.params = params
+    this.paramsSerializer = paramsSerializer
+  }
+
+  /**
+   * 是否绝对路径
+   * @returns {boolean}
+   */
+  isAbsolute() {
+    return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(this.url)
+  }
+
+  get path() {
+    const path = this.isAbsolute()
+      ? this.url
+      : `${this.baseURL.replace(/\/+$/, '')}/${this.url.replace(/^\/+/, '')}`
+    return path.split('?')[0]
+  }
+
+  get queryString() {
+    const queryParams = this.url.split('?').slice(1).join('?')
+    return this.paramsSerializer({
+      ...qs.parse(queryParams),
+      ...this.params,
+    })
+  }
+
+  toString() {
+    return `${this.path}?${this.queryString}`
+  }
+}
+
+/**
+ * 请求实例类
+ */
+class RequestInstance {
+  /**
+   * @param {InstanceConfig} instanceConfig
+   */
+  constructor(instanceConfig) {
+    // 在默认配置基础上合并实例配置
+    this.config = { ...defaultConfig, ...instanceConfig }
+    /**
+     * 拦截器操作动作
+     */
+    this.interceptors = {
+      request: new Interceptors(),
+      response: new Interceptors(),
+    }
+  }
+
+  /**
+   * @param {RequestConfig} requestConfig
+   */
+  async request(requestConfig) {
+    // 合并实例配置与请求配置
+    /**
+     * @type {RequestConfig}
+     */
+    let config = {
+      ...this.config,
+      ...requestConfig,
+    }
+    /* 处理拦截器 */
+    config = this.interceptors.request.exec(config)
+    /* 组装请求地址 */
+    const url = new RequestUrl(config).toString()
+    /* 解析请求体 */
+    const body = config.transformRequest(config.body, config.headers)
+    /* 发送请求 */
+    return fetch(url, {
+      ...config, body,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // 不成功的请求走reject流
+          return Promise.reject(response)
+        }
+        return response
       })
-      console.debug(searchParams)
-    }
-    url = `${url}${searchParams}`
-    /* 解析 content-type 与 data */
-    if (!headers) {
-      headers = {}
-    }
-    if (!headers['content-type']) {
-      headers['content-type'] = 'application/json'
-    }
-    if (headers['content-type'] === 'application/json') {
-      body = JSON.stringify(config.body)
-    }
-    /* 添加权限请求头 */
-    const tokenName = localStorage.getItem('tokenName')
-    let tokenValue = localStorage.getItem('tokenValue') || sessionStorage.getItem('tokenValue')
-    if (tokenName && tokenValue) {
-      tokenValue = JSON.parse(tokenValue)
-      headers[tokenName] = `Bearer ${tokenValue}`
-    }
-    // request interceptors
+      .then(config.transformResponse)
+      .catch((error) => {
+        if (error instanceof Response) {
+          this.interceptors.response.exec(error)
+        }
+        return Promise.reject(error)
+      })
+  }
+}
 
-    return {
-      ...config,
-      url,
-      headers,
-      body,
-    }
-  })
-  .then(({ url, ...options }) => fetch(url, options))
-  .then((response) => {
-    if (!response.ok) {
-      if (response.status === 401) {
-        redirect('/login')
-      }
-      return Promise.reject(response)
-    }
-    // response interceptors
+/**
+ * 创建请求实例 同一实例会共享一些配置 通常一个实例对应一个后端服务
+ * @param {InstanceConfig} instanceConfig
+ * @returns {RequestInstance}
+ */
+function create(instanceConfig = {}) {
+  return new RequestInstance(instanceConfig)
+}
 
-    return response
-  })
+/**
+ * 默认请求实例
+ */
+const instance = create()
 
-export default request
-export { METHOD }
+/**
+ * 后台管理系统实例
+ */
+const adminInstance = create({
+  baseURL: import.meta.env.VITE_ADMIN_CONTEXT_PATH,
+})
+adminInstance.interceptors.request.use(tokenRequestInterceptor)
+adminInstance.interceptors.response.use(unauthorizedResponseInterceptor)
+
+export default { create, instance }
+export { METHOD, instance, adminInstance }

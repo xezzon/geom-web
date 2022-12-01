@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/context/AuthContext'
+import request from '@/api/request'
 import Lazy from '@/hoc/Lazy'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App'
@@ -21,3 +22,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </AuthProvider>
   </>,
 )
+
+/* --------- 全局化变量 --------- */
+window.request = request

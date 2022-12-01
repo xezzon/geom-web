@@ -23,5 +23,6 @@ module.exports = {
     'react/prop-types': 0,
     semi: 0,
     'react/jsx-no-useless-fragment': 0,
+    'max-classes-per-file': 0,
   },
 }

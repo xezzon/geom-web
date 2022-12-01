@@ -54,28 +54,36 @@ const defaultConfig = {
 }
 
 /**
- * 新增拦截器
- * @param {Array<Function>} interceptors 拦截器组
- * @param {Function} interceptor 拦截器
- * @returns 拦截器对象
+ * 拦截器组
  */
-function pushInterceptor(interceptors, interceptor) {
-  const existed = interceptors.find((item) => item === interceptor)
-  if (existed) {
-    return existed
+class Interceptors {
+  constructor() {
+    this.resolvers = []
   }
-  interceptors.push(interceptor)
-  return interceptor
-}
 
-/**
- * 移除拦截器
- * @param {Array<Function>} interceptors 拦截器组
- * @param {object} interceptor 拦截对象
- */
-function removeInterceptor(interceptors, interceptor) {
-  const index = interceptors.findIndex((item) => item === interceptor)
-  interceptors.splice(index, 1)
+  /**
+   * 新增拦截器
+   * @param {Function} resolver
+   */
+  use(resolver) {
+    if (!this.resolvers.includes(resolver)) {
+      this.resolvers.push(resolver)
+    }
+    return resolver
+  }
+
+  /**
+   * 移除拦截器
+   * @param {object} resolver
+   */
+  eject(resolver) {
+    const index = this.resolvers.findIndex((item) => item === resolver)
+    this.resolvers.splice(index, 1)
+  }
+
+  exec(initialValue) {
+    return this.resolvers.reduce((pre, curr) => curr(pre), initialValue)
+  }
 }
 
 /**
@@ -84,39 +92,13 @@ function removeInterceptor(interceptors, interceptor) {
 class RequestInstance {
   constructor(instanceConfig) {
     // 在默认配置基础上合并实例配置
-    /**
-     * @type {InstanceConfig}
-     */
     this.config = { ...defaultConfig, ...instanceConfig }
     /**
-     * 请求拦截器组
-     * @private
-     */
-    this.requestInterceptors = []
-    /**
-     * 响应拦截器组
-     * @private
-     */
-    this.responseInterceptors = []
-    /**
      * 拦截器操作动作
-     * @public
      */
     this.interceptors = {
-      request: {
-        /**
-         * @param {Function} interceptor
-         */
-        use: (interceptor) => pushInterceptor(this.requestInterceptors, interceptor),
-        eject: (interceptor) => removeInterceptor(this.requestInterceptors, interceptor),
-      },
-      response: {
-        /**
-         * @param {Function} interceptor
-         */
-        use: (interceptor) => pushInterceptor(this.responseInterceptors, interceptor),
-        eject: (interceptor) => removeInterceptor(this.responseInterceptors, interceptor),
-      },
+      request: new Interceptors(),
+      response: new Interceptors(),
     }
   }
 
@@ -133,7 +115,7 @@ class RequestInstance {
       ...requestConfig,
     }
     /* 处理拦截器 */
-    config = this.requestInterceptors.reduce((pre, curr) => curr(pre), config)
+    config = this.interceptors.request.exec(config)
     /* 解析查询参数 */
     let searchParams = ''
     if (config.params) {
@@ -158,7 +140,7 @@ class RequestInstance {
       .then(config.transformResponse)
       .catch((error) => {
         if (error instanceof Response) {
-          this.responseInterceptors.reduce((pre, curr) => curr(pre), error)
+          this.interceptors.response.exec(error)
         }
         return Promise.reject(error)
       })

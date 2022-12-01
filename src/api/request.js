@@ -61,11 +61,17 @@ class Interceptors {
     this.resolvers = []
   }
 
+  // eslint-disable-next-line no-underscore-dangle
+  static _EMPTY_FUNCTION() {}
+
   /**
    * 新增拦截器
    * @param {Function} resolver
    */
   use(resolver) {
+    if (!(resolver instanceof Function)) {
+      return _EMPTY_FUNCTION
+    }
     if (!this.resolvers.includes(resolver)) {
       this.resolvers.push(resolver)
     }
@@ -86,10 +92,58 @@ class Interceptors {
   }
 }
 
+class RequestUrl {
+  /**
+   *
+   * @param {u} uri
+   * @param {*} baseURL
+   * @param {*} params
+   * @param {*} paramsSerializer
+   */
+  constructor({
+    url, baseURL, params, paramsSerializer,
+  }) {
+    this.url = url
+    this.baseURL = baseURL
+    this.params = params
+    this.paramsSerializer = paramsSerializer
+  }
+
+  /**
+   * 是否绝对路径
+   * @returns {boolean}
+   */
+  isAbsolute() {
+    return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(this.url)
+  }
+
+  get path() {
+    const path = this.isAbsolute()
+      ? this.url
+      : `${this.baseURL.replace(/\/+$/, '')}/${this.url.replace(/^\/+/, '')}`
+    return path.split('?')[0]
+  }
+
+  get queryString() {
+    const queryParams = this.url.split('?').slice(1).join('?')
+    return this.paramsSerializer({
+      ...qs.parse(queryParams),
+      ...this.params,
+    })
+  }
+
+  toString() {
+    return `${this.path}?${this.queryString}`
+  }
+}
+
 /**
  * 请求实例类
  */
 class RequestInstance {
+  /**
+   * @param {InstanceConfig} instanceConfig
+   */
   constructor(instanceConfig) {
     // 在默认配置基础上合并实例配置
     this.config = { ...defaultConfig, ...instanceConfig }
@@ -116,14 +170,8 @@ class RequestInstance {
     }
     /* 处理拦截器 */
     config = this.interceptors.request.exec(config)
-    /* 解析查询参数 */
-    let searchParams = ''
-    if (config.params) {
-      searchParams += config.url.includes('?') ? '&' : '?'
-      searchParams += config.paramsSerializer(config.params)
-    }
     /* 组装请求地址 */
-    const url = `${config.baseURL}${config.url}${searchParams}`
+    const url = new RequestUrl(config).toString()
     /* 解析请求体 */
     const body = config.transformRequest(config.body, config.headers)
     /* 发送请求 */
@@ -170,5 +218,5 @@ const adminInstance = create({
 adminInstance.interceptors.request.use(tokenRequestInterceptor)
 adminInstance.interceptors.response.use(unauthorizedResponseInterceptor)
 
-export default { create }
+export default { create, instance }
 export { METHOD, instance, adminInstance }

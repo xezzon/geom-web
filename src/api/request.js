@@ -1,4 +1,5 @@
 import qs from 'qs'
+import { tokenRequestInterceptor, unauthorizedResponseInterceptor } from './interceptors';
 
 /**
  * Enum for HTTP Request Method
@@ -19,7 +20,6 @@ const METHOD = {
  * @typedef InstanceConfig 请求实例配置
  * @property {string} baseURL 基础路径 请求地址为URI时有效
  * @property {RequestHeaders} headers 请求头
- * @property {object} params URL参数
  * @property {(params: object) => string} paramsSerializer params序列化方法
  * @property {(data: any, headers: RequestHeaders) => any} transformRequest 拦截并修改请求体/请求头
  * @property {(data: Response) => any} transformResponse 拦截并修改响应
@@ -161,4 +161,14 @@ function create(instanceConfig = {}) {
  */
 const instance = create()
 
-export { METHOD, create, instance }
+/**
+ * 后台管理系统实例
+ */
+const adminInstance = create({
+  baseURL: import.meta.env.VITE_ADMIN_CONTEXT_PATH,
+})
+adminInstance.interceptors.request.use(tokenRequestInterceptor)
+adminInstance.interceptors.response.use(unauthorizedResponseInterceptor)
+
+export default { create }
+export { METHOD, instance, adminInstance }

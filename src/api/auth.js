@@ -1,5 +1,4 @@
-import { METHOD } from './request'
-import { adminInstance } from './instance'
+import { METHOD, adminInstance } from './request'
 
 /**
  * @typedef {object} User 用户基本账号信息

@@ -1,7 +1,4 @@
 import { redirect } from 'react-router-dom'
-import { create } from './request'
-
-/* --------- 拦截器 --------- */
 
 /**
  * 添加权限请求头
@@ -31,10 +28,4 @@ function unauthorizedResponseInterceptor(response) {
   return response
 }
 
-/* --------- 服务请求实例 --------- */
-
-const adminInstance = create()
-adminInstance.interceptors.request.use(tokenRequestInterceptor)
-adminInstance.interceptors.response.use(unauthorizedResponseInterceptor)
-
-export { adminInstance }
+export { tokenRequestInterceptor, unauthorizedResponseInterceptor }

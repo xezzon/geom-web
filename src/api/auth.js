@@ -1,4 +1,5 @@
-import request, { METHOD } from './request'
+import { METHOD } from './request'
+import { adminInstance } from './instance'
 
 /**
  * @typedef {object} User 用户基本账号信息
@@ -18,11 +19,11 @@ import request, { METHOD } from './request'
  * @return {Promise<Token>}
  */
 export async function login(params) {
-  return request({
+  return adminInstance.request({
     url: '/login',
     method: METHOD.POST,
     body: params,
-  }).then((response) => response.json())
+  })
 }
 
 /**
@@ -30,8 +31,8 @@ export async function login(params) {
  * @return {Promise<User>}
  */
 export async function getCurrentUser() {
-  return request({
+  return adminInstance.request({
     url: '/me',
     method: METHOD.GET,
-  }).then((response) => response.json())
+  })
 }

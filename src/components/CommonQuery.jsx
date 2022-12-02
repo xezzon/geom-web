@@ -79,7 +79,7 @@ function CommonQuery({
       return expression ? `(${foreignFilter}) AND (${expression})` : foreignFilter
     }
     return expression
-  }, [filters, querySignal])
+  }, [filters, foreignFilter, querySignal])
   /**
    * 排序表达式
    */
@@ -104,7 +104,6 @@ function CommonQuery({
   )
 
   useEffect(() => {
-    console.debug(filters, queryParam)
     onQuery(queryParam)
   }, [querySignal, foreignFilter, sorter, pagination?.current, pagination?.pageSize])
 
@@ -245,15 +244,28 @@ function FilterList({
   ]
 
   /**
+   * 获取当前列
+   * @param {string} field
+   * @returns {import("antd/lib/table").ColumnProps}
+   */
+  const getColumn = (field) => columns.find(({ dataIndex }) => dataIndex === field)
+  /**
    * 计算当前行类型
    * @param {string} field
+   * @return {string}
    */
-  const getType = (field) => columns.find(({ dataIndex }) => dataIndex === field)?.valueType
+  const getType = (field) => getColumn(field)?.valueType
+  /**
+   * @typedef Dict
+   * @property {string} code
+   * @property {string} label
+   */
   /**
    * 计算当前行字典枚举
    * @param {string} field
+   * @return {object | Promise<Dict[]>}
    */
-  const getOptions = (field) => columns.find(({ dataIndex }) => dataIndex === field)?.options
+  const getOptions = (field) => getColumn(field)?.options
 
   const forceUpdate = useUpdate()
 
@@ -290,13 +302,15 @@ function FilterList({
                 }}
                 placeholder="列名"
                 allowClear
+                showSearch
+                filterOption={(input, option) => (option?.title ?? '').toLowerCase().includes(input.toLowerCase())}
                 className="mx-1 w-100"
                 onChange={(field) => onChange(index, {
                   ...filter,
                   field,
                   valueType: getType(field),
-                  operator: null,
-                  value: null,
+                  operator: undefined,
+                  value: undefined,
                 })}
               />
             </Col>
@@ -319,8 +333,8 @@ function FilterList({
                 <ProField
                   value={filter.value}
                   valueType={filter.valueType}
+                  request={getOptions(filter.field)}
                   fieldProps={{
-                    options: getOptions(filter.field),
                     fieldNames: filter.valueType === 'select' ? { value: 'code' } : undefined,
                     mode: 'multiple',
                     disabled: !filter.field,

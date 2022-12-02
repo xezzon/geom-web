@@ -61,17 +61,11 @@ class Interceptors {
     this.resolvers = []
   }
 
-  // eslint-disable-next-line no-underscore-dangle
-  static _EMPTY_FUNCTION() {}
-
   /**
    * 新增拦截器
    * @param {Function} resolver
    */
   use(resolver) {
-    if (!(resolver instanceof Function)) {
-      return _EMPTY_FUNCTION
-    }
     if (!this.resolvers.includes(resolver)) {
       this.resolvers.push(resolver)
     }
@@ -94,11 +88,11 @@ class Interceptors {
 
 class RequestUrl {
   /**
-   *
-   * @param {u} uri
-   * @param {*} baseURL
-   * @param {*} params
-   * @param {*} paramsSerializer
+   * @param {object} config
+   * @param {string} config.url
+   * @param {string} config.baseURL
+   * @param {object} config.params
+   * @param {Function} config.paramsSerializer
    */
   constructor({
     url, baseURL, params, paramsSerializer,

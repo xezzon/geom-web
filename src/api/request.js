@@ -19,9 +19,9 @@ const METHOD = {
 /**
  * @typedef InstanceConfig 请求实例配置
  * @property {string} baseURL 基础路径 请求地址为URI时有效
- * @property {RequestHeaders} headers 请求头
+ * @property {Headers} headers 请求头
  * @property {(params: object) => string} paramsSerializer params序列化方法
- * @property {(data: any, headers: RequestHeaders) => any} transformRequest 拦截并修改请求体/请求头
+ * @property {(data: any, headers: Headers) => any} transformRequest 拦截并修改请求体/请求头
  * @property {(data: Response) => any} transformResponse 拦截并修改响应
  */
 /**

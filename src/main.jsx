@@ -1,3 +1,4 @@
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/context/AuthContext'
@@ -10,7 +11,7 @@ import './index.css'
 const LoginPage = Lazy(() => import('@/pages/auth/LoginPage'))
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <>
+  <StrictMode>
     <AuthProvider>
       {/* eslint-disable-next-line no-underscore-dangle */}
       <Router basename={window.__MICRO_APP_BASE_ROUTE__ ?? '/'}>
@@ -20,7 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </Routes>
       </Router>
     </AuthProvider>
-  </>,
+  </StrictMode>,
 )
 
 /* --------- 全局化变量 --------- */

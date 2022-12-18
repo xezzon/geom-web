@@ -48,12 +48,6 @@ function LoginPage() {
           setToken1(tokenValue)
         }
       })
-      .catch((reason) => {
-        console.log(reason)
-        reason.json?.()
-          .then(({ message }) => message)
-          .then(message.error)
-      })
   }
 
   if (user) {

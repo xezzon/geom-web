@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { tokenRequestInterceptor, unauthorizedResponseInterceptor } from './interceptors';
+import { tokenRequest, unauthorizedResponse, failedResponsePrompt } from './interceptors';
 
 /**
  * Enum for HTTP Request Method
@@ -209,8 +209,9 @@ const instance = create()
 const adminInstance = create({
   baseURL: import.meta.env.VITE_ADMIN_CONTEXT_PATH,
 })
-adminInstance.interceptors.request.use(tokenRequestInterceptor)
-adminInstance.interceptors.response.use(unauthorizedResponseInterceptor)
+adminInstance.interceptors.request.use(tokenRequest)
+adminInstance.interceptors.response.use(unauthorizedResponse)
+adminInstance.interceptors.response.use(failedResponsePrompt)
 
 export default { create, instance }
 export { METHOD, instance, adminInstance }

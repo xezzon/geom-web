@@ -35,3 +35,14 @@ export async function getCurrentUser() {
     method: METHOD.GET,
   })
 }
+
+/**
+ * 注销登录
+ * @returns {Promise<void>}
+ */
+export async function logout() {
+  return adminInstance.request({
+    url: '/logout',
+    method: METHOD.POST,
+  })
+}

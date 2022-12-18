@@ -1,3 +1,4 @@
+import { logout } from '@/api/auth'
 import {
   useMemo, createContext, useContext, useState,
 } from 'react'
@@ -28,6 +29,7 @@ function AuthProvider({ children }) {
    * 退出登录
    */
   const signout = () => {
+    logout()
     setUser(null)
     sessionStorage.removeItem('tokenValue')
     localStorage.removeItem('tokenValue')

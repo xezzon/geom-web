@@ -129,7 +129,13 @@ function CommonQuery({
           <Button className="mx-1" onClick={() => push({ logic: 'AND', level: 0, children: [] })}>
             新增
           </Button>
-          <Button className="mx-1" onClick={() => { resetList([]); search() }}>
+          <Button
+            className="mx-1"
+            onClick={() => {
+              resetList([])
+              search()
+            }}
+          >
             重置
           </Button>
           <Button type="primary" className="mx-1" onClick={search}>

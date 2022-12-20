@@ -6,7 +6,7 @@ import {
 } from '@ant-design/pro-components'
 import { useLocalStorageState, useSessionStorageState, useTitle } from 'ahooks'
 import {
-  Button, Divider, Space, message,
+  Button, Divider, Space,
 } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'

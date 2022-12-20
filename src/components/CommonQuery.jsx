@@ -104,8 +104,15 @@ function CommonQuery({
   )
 
   useEffect(() => {
+    onQuery({
+      ...queryParam,
+      pageNum: 1,
+    })
+  }, [querySignal, foreignFilter, sorter])
+
+  useEffect(() => {
     onQuery(queryParam)
-  }, [querySignal, foreignFilter, sorter, pagination?.current, pagination?.pageSize])
+  }, [pagination?.current, pagination?.pageSize])
 
   /**
    * 暴露给外部的接口
@@ -122,7 +129,7 @@ function CommonQuery({
           <Button className="mx-1" onClick={() => push({ logic: 'AND', level: 0, children: [] })}>
             新增
           </Button>
-          <Button className="mx-1" onClick={() => resetList([])}>
+          <Button className="mx-1" onClick={() => { resetList([]); search() }}>
             重置
           </Button>
           <Button type="primary" className="mx-1" onClick={search}>

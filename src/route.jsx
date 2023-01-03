@@ -1,7 +1,9 @@
-import { HomeOutlined } from '@ant-design/icons'
+import { ApiOutlined, HomeOutlined } from '@ant-design/icons'
 import Lazy from '@/hoc/Lazy'
 
 const HomePage = Lazy(() => import('@/pages/home/HomePage'))
+
+const PublishPage = Lazy(() => import('@/pages/public-api/PublishPage'))
 
 export const route = {
   path: '/',
@@ -13,9 +15,21 @@ export const route = {
     {
       path: '/',
       name: '首页',
-      index: true,
       icon: <HomeOutlined />,
       element: <HomePage />,
+      index: true,
+    },
+    {
+      path: '/public-api',
+      name: '开放接口',
+      icon: <ApiOutlined />,
+      children: [
+        {
+          path: 'publish',
+          name: '我发布的',
+          element: <PublishPage />,
+        },
+      ],
     },
   ],
 }

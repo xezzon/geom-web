@@ -25,7 +25,7 @@ export const route = {
       icon: <ApiOutlined />,
       children: [
         {
-          path: 'publish',
+          path: '/public-api/publish',
           name: '我发布的',
           element: <PublishPage />,
         },

@@ -34,3 +34,7 @@ code {
   vertical-align: middle;
   cursor: pointer;
 }
+
+.ant-menu-item a {
+  text-decoration-line: none;
+}

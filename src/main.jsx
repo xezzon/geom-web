@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import App from './App'
 import './index.css'
 
-const LoginPage = Lazy(() => import('@/pages/auth/LoginPage'))
+const LoginPage = Lazy(() => import('@/pages/home/LoginPage'))
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <StrictMode>

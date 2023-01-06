@@ -25,7 +25,6 @@ const routes = [
     path: '/dict',
     name: '字典',
     icon: <BookOutlined />,
-    element: <></>,
   },
   {
     path: '/auth',

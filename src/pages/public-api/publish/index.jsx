@@ -2,8 +2,8 @@ import { PageContainer } from '@ant-design/pro-components'
 import { useBoolean } from 'ahooks'
 import { Modal } from 'antd'
 import { useRef, useState } from 'react'
-import PublicApiDetail from './PublicApiDetail'
-import PublicApiList from './PublicApiList'
+import PublicApiDetail from '../PublicApiDetail'
+import PublicApiList from '../PublicApiList'
 
 /**
  * 开放接口 - 我发布的

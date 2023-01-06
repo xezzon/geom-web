@@ -1,7 +1,7 @@
 /**
  *
  * @param {Array} tree
- * @param {(Array) => Array} callback
+ * @param {(callback: Array) => Array} callback
  * @param {string} childrenProp
  * @returns {Array}
  */

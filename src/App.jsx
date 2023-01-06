@@ -8,11 +8,13 @@ import {
 } from 'react-router-dom'
 import { RequireAuth, useAuth } from '@/context/AuthContext'
 import { route } from './route'
+import { filterDeep } from '@/util/tree'
 
 function App() {
   const { pathname } = useLocation()
-  const main = useRoutes(route.routes)
   const { user, signout } = useAuth()
+  const menu = filterDeep(route.routes, (arr) => arr)
+  const main = useRoutes(route.routes)
 
   return (
     <RequireAuth>
@@ -21,7 +23,7 @@ function App() {
         fixSiderbar
         fixHeader
         title="系统管理"
-        route={route}
+        route={{ ...route, routes: menu }}
         location={{ pathname }}
         menu={{ autoClose: false }}
         menuItemRender={(item, dom) => <Link to={item.path}>{dom}</Link>}

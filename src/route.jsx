@@ -39,7 +39,6 @@ const routes = [
       {
         path: '/auth/role',
         name: '角色',
-        element: <></>,
       },
       {
         path: '/auth/menu',

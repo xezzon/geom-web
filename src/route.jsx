@@ -1,4 +1,6 @@
-import { ApiOutlined, HomeOutlined, MenuOutlined } from '@ant-design/icons'
+import {
+  ApiOutlined, BookOutlined, HomeOutlined, MenuOutlined, RadarChartOutlined,
+} from '@ant-design/icons'
 import { createElement } from 'react'
 import Lazy from '@/hoc/Lazy'
 import { nest } from '@/util/tree'
@@ -20,10 +22,26 @@ const routes = [
     index: true,
   },
   {
+    path: '/dict',
+    name: '字典',
+    icon: <BookOutlined />,
+    element: <></>,
+  },
+  {
     path: '/auth',
     name: '权限管理',
     icon: <MenuOutlined />,
     children: [
+      {
+        path: '/auth/user',
+        name: '用户',
+        element: <></>,
+      },
+      {
+        path: '/auth/role',
+        name: '角色',
+        element: <></>,
+      },
       {
         path: '/auth/menu',
         name: '菜单',
@@ -38,6 +56,28 @@ const routes = [
       {
         path: '/public-api/publish',
         name: '我发布的',
+      },
+    ],
+  },
+  {
+    path: '/telemetry',
+    name: '遥测',
+    icon: <RadarChartOutlined />,
+    children: [
+      {
+        path: '/telemetry/log',
+        name: '日志',
+        element: <></>,
+      },
+      {
+        path: '/telemetry/trace',
+        name: '调用链',
+        element: <></>,
+      },
+      {
+        path: '/telemetry/metric',
+        name: '仪表盘',
+        element: <></>,
       },
     ],
   },

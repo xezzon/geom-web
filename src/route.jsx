@@ -3,6 +3,7 @@ import {
 } from '@ant-design/icons'
 import { createElement } from 'react'
 import Lazy from '@/hoc/Lazy'
+import NotFoundPage from '@/pages/404'
 import { nest } from '@/util/tree'
 
 const modules = import.meta.glob('/src/pages/**/index.jsx')
@@ -79,6 +80,12 @@ const routes = [
       },
     ],
   },
+  {
+    path: '*',
+    name: '404',
+    element: <NotFoundPage />,
+    hideInMenu: true,
+  },
 ]
 
 export const route = {
@@ -93,7 +100,7 @@ export const route = {
       return item
     }
     const module = modules[`/src/pages${item.path}/index.jsx`]
-    const element = module ? createElement(Lazy(module)) : <>404</>
+    const element = module ? createElement(Lazy(module)) : <NotFoundPage />
     return { ...item, element }
   })),
 }

@@ -7,9 +7,12 @@ import { logout } from '@/api/auth'
 const AuthContext = createContext(null)
 
 /**
+ * @typedef {import('@/api/auth').User} User
+ */
+/**
  * @returns {{
- * user: object,
- * signin: (newUser: import('@/api/auth').User) => void,
+ * user: User,
+ * signin: (newUser: User) => void,
  * signout: VoidFunction,
  * hasRole: (requiredRole: string) => boolean,
  * hasPermission: (obj: object, pathProp: string, childrenProp: string) => boolean,
@@ -21,7 +24,7 @@ function useAuth() {
 
 function AuthProvider({ children }) {
   /**
-   * @type {[user: import('@/api/auth').User, setUser: Function]} 当前用户信息
+   * @type {[user: User, setUser: Function]} 当前用户信息
    */
   const [user, setUser] = useState(null)
 
@@ -36,7 +39,7 @@ function AuthProvider({ children }) {
 
   /**
    * 登录
-   * @param {object} newUser
+   * @param {User} newUser
    */
   const signin = (newUser) => {
     setUser(newUser)

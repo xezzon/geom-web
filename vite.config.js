@@ -27,7 +27,7 @@ export default ({ mode }) => {
         [env.VITE_ADMIN_CONTEXT_PATH]: {
           target: env.VITE_ADMIN_SERVER,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
+          rewrite: (path) => path.replace(env.VITE_ADMIN_CONTEXT_PATH, ''),
         },
       },
     },

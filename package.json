@@ -1,11 +1,12 @@
 {
   "name": "geom",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "prepare": "husky install",
     "dev": "vite",
     "dev:mock": "vite --mode mock",
+    "docker:build": "vite build && docker build -t xezzon/$npm_package_name:$npm_package_version .",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .js,.jsx"

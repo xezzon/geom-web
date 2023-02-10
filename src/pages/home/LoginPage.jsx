@@ -62,7 +62,7 @@ function LoginPage() {
     <div style={{ backgroundColor: 'white', height: '100vh' }}>
       <LoginFormPage
         backgroundImageUrl="/bg.png"
-        logo="/logo.svg"
+        logo="/geom.svg"
         title="系统管理"
         subTitle=" "
         actions={(

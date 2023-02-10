@@ -20,3 +20,15 @@ export async function getTags() {
     method: METHOD.GET,
   })
 }
+
+/**
+ * 列表
+ * @param {string} tag 字典目
+ * @returns {Promise<Dict[]>}
+ */
+export async function list(tag) {
+  return adminInstance.request({
+    url: `/dict/${tag}`,
+    method: METHOD.GET,
+  })
+}

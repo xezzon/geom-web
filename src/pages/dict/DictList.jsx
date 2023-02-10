@@ -1,29 +1,24 @@
+import { PlusOutlined } from '@ant-design/icons'
 import {
-  Table, Spin, Button, Space,
+  Button, Space, Table, Spin,
 } from 'antd'
 import { useState } from 'react'
 import { useRequest } from 'ahooks'
-import { PlusOutlined } from '@ant-design/icons'
-import { getTags as getTagsApi } from '@/api/dict'
 import CommonQuery from '@/components/CommonQuery'
+import { list as listApi } from '@/api/dict'
 
-/**
- * 字典目列表
- * @param {object} param0
- * @param {(dict: import('@/api/dict').Dict) => void} onDetail
- */
-function DictTagList({ onDetail }) {
+function DictList({ tag }) {
   const [dataSource, setDataSource] = useState([])
   const [pagination] = useState({
-    simple: true,
+    hideOnSinglePage: true,
     current: 1,
-    pageSize: 15,
+    pageSize: 0,
   })
   const [sorter] = useState({})
 
-  const { loading, runAsync: runGetTagsApi } = useRequest(getTagsApi, { manual: true })
+  const { loading, runAsync: runListApi } = useRequest(listApi, { manual: true })
 
-  const getTags = async () => runGetTagsApi()
+  const list = async () => runListApi(tag)
     .then((tags) => {
       setDataSource(tags)
     })
@@ -36,11 +31,11 @@ function DictTagList({ onDetail }) {
       key: 'index',
       title: '序号',
       render: (_1, _2, index) => index + 1,
-      width: '6%',
+      width: '10%',
     },
     {
       dataIndex: 'label',
-      title: '类型',
+      title: '名称',
       valueType: 'text',
     },
     {
@@ -52,14 +47,13 @@ function DictTagList({ onDetail }) {
       dataIndex: 'ordinal',
       title: '排序',
       hideInSearch: true,
-      width: '15%',
     },
     {
       key: 'options',
       title: '操作',
-      render: (_, record) => (
+      render: () => (
         <Space>
-          <Button onClick={() => onDetail(record)}>详情</Button>
+          <Button>修改</Button>
         </Space>
       ),
     },
@@ -74,10 +68,9 @@ function DictTagList({ onDetail }) {
         </Button>
         <CommonQuery
           columns={columns}
-          filter={"code EQ 'tags'"}
           sorter={sorter}
           pagination={pagination}
-          onQuery={getTags}
+          onQuery={list}
         />
       </Space>
     </div>
@@ -96,4 +89,4 @@ function DictTagList({ onDetail }) {
   )
 }
 
-export default DictTagList
+export default DictList

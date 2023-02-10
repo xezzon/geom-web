@@ -1,6 +1,8 @@
 import { CloseOutlined, FilterOutlined, PlusOutlined } from '@ant-design/icons'
 import { ProField } from '@ant-design/pro-components'
-import { useUpdate, useCounter, useDynamicList } from 'ahooks'
+import {
+  useUpdateEffect, useUpdate, useCounter, useDynamicList,
+} from 'ahooks'
 import {
   Space, Button, Col, Popover, Row, Select,
 } from 'antd'
@@ -103,7 +105,7 @@ function CommonQuery({
     [filterExpression, sortExpression, pagination?.current, pagination?.pageSize],
   )
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     onQuery({
       ...queryParam,
       pageNum: 1,

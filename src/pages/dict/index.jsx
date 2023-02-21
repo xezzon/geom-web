@@ -23,10 +23,10 @@ function DictPage() {
         title={`${tagDict?.code} - ${tagDict?.label}`}
         destroyOnClose
         maskClosable={false}
-        onClose={() => setTagDict(null)}
+        onClose={() => setTagDict()}
         width="61.8%"
       >
-        <DictList tag={tagDict?.code} />
+        <DictList tag={tagDict} />
       </Drawer>
     </>
   )

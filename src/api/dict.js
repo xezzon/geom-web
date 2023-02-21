@@ -32,3 +32,15 @@ export async function list(tag) {
     method: METHOD.GET,
   })
 }
+
+/**
+ * 新增
+ * @param {Dict} dict 字典
+ */
+export async function add(dict) {
+  return adminInstance.request({
+    url: '/dict',
+    method: METHOD.POST,
+    body: dict,
+  })
+}

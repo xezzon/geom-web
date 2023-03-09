@@ -50,7 +50,8 @@ const defaultConfig = {
     }
     return data
   },
-  transformResponse: (data) => data.json(),
+  transformResponse: (response) => response.text()
+    .then((value) => value && JSON.parse(value)),
 }
 
 /**

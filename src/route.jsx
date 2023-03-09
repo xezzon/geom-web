@@ -1,4 +1,6 @@
-import { ApiOutlined, HomeOutlined, MenuOutlined } from '@ant-design/icons'
+import {
+  ApiOutlined, BookOutlined, HomeOutlined, MenuOutlined,
+} from '@ant-design/icons'
 import { createElement } from 'react'
 import Lazy from '@/hoc/Lazy'
 import { nest } from '@/util/tree'
@@ -18,6 +20,11 @@ const routes = [
     icon: <HomeOutlined />,
     element: <HomePage />,
     index: true,
+  },
+  {
+    path: '/dict',
+    name: '字典',
+    icon: <BookOutlined />,
   },
   {
     path: '/auth',

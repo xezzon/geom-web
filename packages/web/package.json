@@ -1,0 +1,26 @@
+{
+  "name": "geom",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "dev:mock": "vite --mode mock",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .js,.jsx"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.8.0",
+    "@ant-design/pro-components": "^2.3.47",
+    "ahooks": "^3.7.2",
+    "antd": "^5.0.6",
+    "bootstrap": "^5.2.3",
+    "qs": "^6.11.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react-swc": "^3.0.0"
+  }
+}

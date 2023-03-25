@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, CreateAxiosDefaults, InternalAxiosRequestConfig } from "axios"
-import { register } from "@/api/user";
+import { getMe, login, register } from "@/api/user";
 
 /* 统一定义为抽象类型 暂时使用 Axios 实现 */
 export declare type Instance = AxiosInstance
@@ -13,6 +13,14 @@ export default (config: CreateAxiosDefaults) => {
     /**
      * 用户注册
      */
-    register: register(instance)
+    register: register(instance),
+    /**
+     * 用户登录
+     */
+    login: login(instance),
+    /**
+     * 获取当前登录用户信息
+     */
+    getMe: getMe(instance),
   }
 }

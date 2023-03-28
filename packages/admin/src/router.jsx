@@ -15,7 +15,7 @@ const modules = import.meta.glob('/src/pages/**/index.jsx')
 /**
  * @type {Routes}
  */
-const mainRoutes = nest(menus, (menus) => menus.map((menu) => {
+export const mainRoutes = nest(menus, (menus) => menus.map((menu) => {
   if (menu.children) {
     return menu
   }
@@ -29,7 +29,7 @@ const mainRoutes = nest(menus, (menus) => menus.map((menu) => {
 /**
  * @type {Routes}
  */
-export default [
+export const routes = [
   {
     path: '/',
     Component: Layout,

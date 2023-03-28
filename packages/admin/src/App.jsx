@@ -1,6 +1,6 @@
 import { AuthProvider } from '@/context/AuthContext'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import routes from './router'
+import { routes } from './router'
 
 function App() {
   const router = createBrowserRouter(routes, {

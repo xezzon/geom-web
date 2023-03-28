@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/home",
+    "name": "首页",
+    "key": "@/pages/home",
+    "index": true
+  },
+  {
+    "path": "/dict",
+    "name": "字典"
+  },
+  {
+    "path": "/auth",
+    "name": "权限管理",
+    "children": [
+      {
+        "path": "/auth/menu",
+        "name": "菜单"
+      }
+    ]
+  }
+]

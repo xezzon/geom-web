@@ -1,0 +1,6 @@
+/* Override the style of Ant Design */
+
+.ant-pro-form-login-container {
+  align-items: center;
+  justify-content: center;
+}

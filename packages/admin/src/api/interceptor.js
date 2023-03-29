@@ -5,12 +5,15 @@ import { message as messageApi } from "antd";
  * @param {import('axios').AxiosError} error
  */
 function failedResponsePrompt({ response }) {
+  if (!response) {
+    return Promise.reject(response)
+  }
   const { code, message } = response.data
   if (code && message) {
     console.log(response.data)
     messageApi.error(message)
   }
-  return response
+  return Promise.reject(response)
 }
 
 export {

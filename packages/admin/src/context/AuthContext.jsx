@@ -1,3 +1,4 @@
+import { adminClient } from '@/api'
 import { createContext, useContext, useMemo, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 
@@ -14,8 +15,15 @@ function AuthProvider({ children }) {
     setUser(user)
   }
 
+  const signOut = () => {
+    adminClient.logout()
+    setUser(null)
+    sessionStorage.removeItem('tokenValue')
+    localStorage.removeItem('tokenValue')
+  }
+
   const value = useMemo(() => ({
-    user, signIn,
+    user, signIn, signOut,
   }), [user])
 
   return (

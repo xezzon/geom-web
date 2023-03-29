@@ -1,4 +1,4 @@
-import { Instance } from "@/GeomAdminClient";
+import { Instance } from "@/typings";
 import { AxiosResponse } from "axios";
 
 /**
@@ -38,8 +38,8 @@ export const login = (client: Instance) =>
       data: user,
     })
 
-export const logout = (client: Instance) => 
-  async () => 
+export const logout = (client: Instance) =>
+  async () =>
     client.request({
       url: '/logout',
       method: 'POST',

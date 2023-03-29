@@ -1,9 +1,6 @@
-import axios, { AxiosInstance, CreateAxiosDefaults, InternalAxiosRequestConfig } from "axios"
+import axios, { CreateAxiosDefaults } from "axios"
+import { Instance } from "@/typings";
 import { getMe, login, logout, register } from "@/api/user";
-
-/* 统一定义为抽象类型 暂时使用 Axios 实现 */
-export declare type Instance = AxiosInstance
-export declare type Interceptor = (config: InternalAxiosRequestConfig<any>) => InternalAxiosRequestConfig<any>
 
 export default (config: CreateAxiosDefaults) => {
   const instance: Instance = axios.create(config)

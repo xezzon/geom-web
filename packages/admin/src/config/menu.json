@@ -1,8 +1,8 @@
 [
   {
-    "path": "/home",
+    "path": "/",
     "name": "首页",
-    "key": "@/pages/home",
+    "key": "/home/index",
     "index": true
   },
   {

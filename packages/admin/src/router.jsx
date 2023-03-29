@@ -10,16 +10,19 @@ import { nest } from '@/util/tree'
 /**
  * @type {Routes}
  */
-const modules = import.meta.glob('/src/pages/**/index.jsx')
+const modules = import.meta.glob('/src/pages/**/*.jsx')
 
 /**
  * @type {Routes}
  */
 export const mainRoutes = nest(menus, (menus) => menus.map((menu) => {
-  if (menu.children) {
-    return menu
+  // 懒加载组件
+  let module = undefined
+  if (menu.key) {
+    module = modules[`/src/pages${menu.key}.jsx`]
+  } else {
+    module = modules[`/src/pages${menu.path}/index.jsx`]
   }
-  const module = modules[`/src/pages${menu.path}/index.jsx`]
   return {
     ...menu,
     lazy: module,

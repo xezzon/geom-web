@@ -1,3 +1,5 @@
+import * as Icons from '@ant-design/icons'
+import { createElement } from 'react'
 import menus from '@/config/menu'
 import Layout from '@/component/Layout'
 import { nest } from '@/util/tree'
@@ -23,9 +25,15 @@ export const mainRoutes = nest(menus, (menus) => menus.map((menu) => {
   } else {
     module = modules[`/src/pages${menu.path}/index.jsx`]
   }
+  // 图标
+  let icon = <></>
+  if (menu.icon) {
+    icon = createElement(Icons[menu.icon])
+  }
   return {
     ...menu,
     lazy: module,
+    icon,
   }
 }))
 

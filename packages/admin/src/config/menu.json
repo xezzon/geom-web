@@ -3,15 +3,18 @@
     "path": "/",
     "name": "首页",
     "key": "/home/index",
+    "icon": "HomeOutlined",
     "index": true
   },
   {
     "path": "/dict",
-    "name": "字典"
+    "name": "字典",
+    "icon": "BookOutlined"
   },
   {
     "path": "/auth",
     "name": "权限管理",
+    "icon": "MenuOutlined",
     "children": [
       {
         "path": "/auth/menu",

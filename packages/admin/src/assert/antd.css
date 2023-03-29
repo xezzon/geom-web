@@ -4,3 +4,7 @@
   align-items: center;
   justify-content: center;
 }
+
+.ant-menu-item a {
+  text-decoration-line: none;
+}

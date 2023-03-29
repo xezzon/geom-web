@@ -2,6 +2,10 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { LoginForm, ProFormText } from "@ant-design/pro-components";
 import { adminClient } from "@/api";
 
+/**
+ * 注册页
+ * @returns {import("react").ReactNode}
+ */
 function SignUpPage() {
   const register = (user) => {
     adminClient.register(user)
@@ -83,4 +87,6 @@ function SignUpPage() {
   )
 }
 
-export default SignUpPage
+export {
+  SignUpPage as Component,
+}

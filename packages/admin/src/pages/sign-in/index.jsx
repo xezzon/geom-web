@@ -13,6 +13,10 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { adminClient } from "@/api"
 
+/**
+ * 登录页
+ * @returns {import('react').ReactNode}
+ */
 function SignInPage() {
   const location = useLocation()
   const { user, signIn } = useAuth()
@@ -150,4 +154,6 @@ function SignInPage() {
   )
 }
 
-export default SignInPage
+export {
+  SignInPage as Component,
+}

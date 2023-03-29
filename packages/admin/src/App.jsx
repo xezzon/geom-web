@@ -1,22 +1,15 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/context/AuthContext'
-import SignInPage from '@/pages/sign-in'
-import SignUpPage from '@/pages/sign-up'
-import HomePage from '@/pages/home'
-import Layout from './component/Layout'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { routes } from './router'
 
 function App() {
+  const router = createBrowserRouter(routes, {
+    basename: window.__MICRO_APP_BASE_ROUTE__ ?? '/',
+  })
+
   return <>
     <AuthProvider>
-      <Router basename={window.__MICRO_APP_BASE_ROUTE__ ?? '/'}>
-        <Routes>
-          <Route path="/" Component={Layout}>
-            <Route path='/home' Component={HomePage} />
-          </Route>
-          <Route path="/sign-up" Component={SignUpPage} />
-          <Route path="/sign-in" Component={SignInPage} />
-        </Routes>
-      </Router>
+      <RouterProvider router={router} />
     </AuthProvider>
   </>
 }

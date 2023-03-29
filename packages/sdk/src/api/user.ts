@@ -37,3 +37,10 @@ export const login = (client: Instance) =>
       method: 'POST',
       data: user,
     })
+
+export const logout = (client: Instance) => 
+  async () => 
+    client.request({
+      url: '/logout',
+      method: 'POST',
+    })

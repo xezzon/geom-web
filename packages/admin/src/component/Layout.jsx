@@ -8,7 +8,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 
 function Layout() {
   const { pathname } = useLocation()
-  const { user, signout } = useAuth()
+  const { user, signOut } = useAuth()
   const filterRoutes = filterDeep(mainRoutes, (arr) => arr)
 
   return (
@@ -30,7 +30,7 @@ function Layout() {
                 {
                   key: 'signout',
                   icon: <LogoutOutlined />,
-                  label: (<Typography.Link onClick={signout}>退出登录</Typography.Link>),
+                  label: (<Typography.Link onClick={signOut}>退出登录</Typography.Link>),
                 },
               ],
             }}

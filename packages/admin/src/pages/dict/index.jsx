@@ -2,6 +2,7 @@
  * @typedef {import('@xezzon/geom/dist/api/dict').Dict} Dict
  */
 import { PageContainer } from '@ant-design/pro-components'
+import { Modal } from 'antd'
 import { useState } from 'react'
 import DictTagList from './DictTagList'
 

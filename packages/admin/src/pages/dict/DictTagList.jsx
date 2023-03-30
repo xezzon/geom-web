@@ -1,14 +1,13 @@
 /**
  * @typedef {import('@/typings').Dict} Dict
  */
-import {
-  Table, Spin, Button, Space,
-} from 'antd'
-import { useState, useRef } from 'react'
-import { useRequest } from 'ahooks'
-import { PlusOutlined } from '@ant-design/icons'
 import { adminClient } from '@/api'
 import CommonQuery from '@/component/CommonQuery'
+import { PlusOutlined } from '@ant-design/icons'
+import { useRequest } from 'ahooks'
+import { Button, Modal, Space, Spin, Table } from 'antd'
+import { useRef, useState } from 'react'
+import DictEditor from './DictEditor'
 
 /**
  * 字典目列表
@@ -23,8 +22,10 @@ function DictTagList({ onDetail }) {
     pageSize: 15,
   })
   const [sorter] = useState({})
+  const [record, setRecord] = useState(/** @type {Dict} */(null))
 
   const commonQuery = useRef(null)
+  const editorRef = useRef(null)
 
   const { loading, runAsync: fetchDictTagPage } = useRequest(adminClient.dictTagPage, { manual: true })
 
@@ -33,6 +34,12 @@ function DictTagList({ onDetail }) {
     .then(({ content }) => {
       setDataSource(content)
     })
+  const saveDict = () => editorRef.current
+    .save()
+    .then(() => {
+      setRecord()
+    })
+    .then(commonQuery.current.search)
 
   /**
    * @type {import('antd').TableColumnProps}
@@ -78,6 +85,12 @@ function DictTagList({ onDetail }) {
         <Button
           type="primary"
           icon={<PlusOutlined />}
+          onClick={() => {
+            setRecord({
+              parentId: '0',
+              tag: 'tag',
+            })
+          }}
         >
           新增
         </Button>
@@ -104,6 +117,17 @@ function DictTagList({ onDetail }) {
           sticky
         />
       </Spin>
+      <Modal
+        title="编辑字典"
+        open={!!record}
+        destroyOnClose
+        okText="保存"
+        maskClosable={false}
+        onOk={saveDict}
+        onCancel={() => { setRecord() }}
+      >
+        <DictEditor initData={record} ref={editorRef} />
+      </Modal>
     </>
   )
 }

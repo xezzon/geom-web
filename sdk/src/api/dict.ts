@@ -37,10 +37,9 @@ export const dictTagPage = (client: Instance) =>
     })
 
 export const addDict = (client: Instance) =>
-  async (dict: Dict) => {
+  async (dict: Dict) =>
     client.request({
       url: '/dict',
       method: 'POST',
       data: dict,
     })
-  }

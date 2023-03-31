@@ -49,7 +49,7 @@ function DictTagList({ onDetail }) {
       key: 'index',
       title: '序号',
       render: (_1, _2, index) => index + 1,
-      width: '6%',
+      width: '10%',
     },
     {
       dataIndex: 'label',

@@ -96,7 +96,7 @@ function DictTagList({ onDetail }) {
         </Button>
         <CommonQuery
           columns={columns}
-          filter={"code EQ 'tag'"}
+          filter={"tag EQ 'tag'"}
           sorter={sorter}
           pagination={pagination}
           onQuery={fetchPage}

@@ -43,3 +43,10 @@ export const addDict = (client: Instance) =>
       method: 'POST',
       data: dict,
     })
+
+export const dictListByTag = (client: Instance) =>
+  async (tag: String) =>
+    client.request({
+      url: `/dict/${tag}`,
+      method: 'GET',
+    })

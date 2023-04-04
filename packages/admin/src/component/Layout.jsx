@@ -1,4 +1,5 @@
-import { RequireAuth, useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
+import { RequireAuth } from '@/component/RequireAuth'
 import { mainRoutes } from '@/router';
 import { filterDeep } from "@/util/tree";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";

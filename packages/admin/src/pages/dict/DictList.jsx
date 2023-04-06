@@ -62,6 +62,7 @@ function DictList({ tag }) {
     {
       dataIndex: 'ordinal',
       title: '排序',
+      width: '4rem',
       hideInSearch: true,
     },
     {
@@ -69,6 +70,12 @@ function DictList({ tag }) {
       title: '操作',
       render: (_, { id }) => (
         <Space>
+          <Button onClick={() => setRecord({
+            parentId: id,
+            tag: tag.code
+          })}>
+            新增
+          </Button>
           <Button>修改</Button>
           <Button onClick={() => removeDict(id)}>删除</Button>
         </Space>

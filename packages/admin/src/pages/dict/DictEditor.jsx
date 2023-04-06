@@ -3,17 +3,26 @@ import { Input, Form, InputNumber } from 'antd'
 import { useImperativeHandle, forwardRef } from 'react'
 import { adminClient } from '@/api'
 
+/**
+ * 字典编辑器
+ * @param {object} props
+ * @param {import('@/typings').Dict} props.initData
+ */
 function DictEditor({ initData }, ref) {
   const [form] = Form.useForm()
   const { loading, runAsync: fetchAddDict } = useRequest(adminClient.addDict, { manual: true })
+  const { runAsync: fetchModifyDict } = useRequest(adminClient.modifyDict, { manual: true })
 
   const add = async () => form
     .validateFields()
     .then(fetchAddDict)
+  const modify = async () => form
+    .validateFields()
+    .then(fetchModifyDict)
 
   useImperativeHandle(ref, () => ({
     loading,
-    save: add,
+    save: initData.id ? modify : add,
   }))
 
   return (
@@ -31,6 +40,12 @@ function DictEditor({ initData }, ref) {
       }}
     >
       <Form.Item
+        name="id"
+        hidden
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
         name="tag"
         label="字典目"
         rules={[{ required: true }]}
@@ -43,7 +58,7 @@ function DictEditor({ initData }, ref) {
         label="编码"
         rules={[{ required: true }]}
       >
-        <Input />
+        <Input disabled={!!initData.id} />
       </Form.Item>
       <Form.Item
         name="label"

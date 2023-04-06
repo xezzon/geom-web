@@ -79,6 +79,7 @@ function DictTagList({ onDetail }) {
       render: (_, record) => (
         <Space>
           <Button onClick={() => onDetail(record)}>详情</Button>
+          <Button onClick={() => setRecord(record)}>修改</Button>
           <Button onClick={() => removeDict(record.id)}>删除</Button>
         </Space>
       ),

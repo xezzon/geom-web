@@ -1,7 +1,7 @@
 import axios, { CreateAxiosDefaults } from "axios"
 import { Instance } from "@/typings";
 import { getMe, login, logout, register } from "@/api/user";
-import { addDict, dictListByTag, dictTagPage, removeDict } from "@/api/dict";
+import { addDict, dictListByTag, dictTagPage, modifyDict, removeDict } from "@/api/dict";
 
 export default (config: CreateAxiosDefaults) => {
   const instance: Instance = axios.create(config)
@@ -40,5 +40,9 @@ export default (config: CreateAxiosDefaults) => {
      * 递归删除字典及其子级
      */
     removeDict: removeDict(instance),
+    /**
+     * 修改字典
+     */
+    modifyDict: modifyDict(instance),
   }
 }

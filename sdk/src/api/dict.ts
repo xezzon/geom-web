@@ -57,4 +57,12 @@ export const removeDict = (client: Instance) =>
       url: `/dict/${id}`,
       method: 'DELETE',
     })
+
+export const modifyDict = (client: Instance) =>
+  async (dict: Dict) =>
+    client.request({
+      url: `/dict`,
+      method: 'PUT',
+      data: dict
+    })
     

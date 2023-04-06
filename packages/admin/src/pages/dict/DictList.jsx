@@ -68,16 +68,16 @@ function DictList({ tag }) {
     {
       key: 'options',
       title: '操作',
-      render: (_, { id }) => (
+      render: (_, record) => (
         <Space>
           <Button onClick={() => setRecord({
-            parentId: id,
+            parentId: record.id,
             tag: tag.code
           })}>
             新增
           </Button>
-          <Button>修改</Button>
-          <Button onClick={() => removeDict(id)}>删除</Button>
+          <Button onClick={() => setRecord(record)}>修改</Button>
+          <Button onClick={() => removeDict(record.id)}>删除</Button>
         </Space>
       ),
     },

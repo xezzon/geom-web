@@ -28,6 +28,7 @@ function DictTagList({ onDetail }) {
   const editorRef = useRef(null)
 
   const { loading, runAsync: fetchDictTagPage } = useRequest(adminClient.dictTagPage, { manual: true })
+  const { runAsync: fetchRemoveDict } = useRequest(adminClient.removeDict, { manual: true })
 
   const fetchPage = async (params) => fetchDictTagPage(params)
     .then((response) => response.data)
@@ -39,6 +40,8 @@ function DictTagList({ onDetail }) {
     .then(() => {
       setRecord()
     })
+    .then(commonQuery.current.search)
+  const removeDict = (id) => fetchRemoveDict(id)
     .then(commonQuery.current.search)
 
   /**
@@ -73,6 +76,7 @@ function DictTagList({ onDetail }) {
       render: (_, record) => (
         <Space>
           <Button onClick={() => onDetail(record)}>详情</Button>
+          <Button onClick={() => removeDict(record.id)}>删除</Button>
         </Space>
       ),
     },

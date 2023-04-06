@@ -26,6 +26,7 @@ function DictList({ tag }) {
   const editorRef = useRef(null)
 
   const { loading, runAsync: fetchDictListByTag } = useRequest(adminClient.dictListByTag, { manual: true })
+  const { runAsync: fetchRemoveDict } = useRequest(adminClient.removeDict, { manual: true })
 
   const list = async () => fetchDictListByTag(tag.code)
     .then((response) => response.data)
@@ -37,6 +38,8 @@ function DictList({ tag }) {
     .then(() => {
       setRecord()
     })
+    .then(list)
+  const removeDict = (id) => fetchRemoveDict(id)
     .then(list)
 
   /**
@@ -61,9 +64,10 @@ function DictList({ tag }) {
     {
       key: 'options',
       title: '操作',
-      render: () => (
+      render: (_, { id }) => (
         <Space>
           <Button>修改</Button>
+          <Button onClick={() => removeDict(id)}>删除</Button>
         </Space>
       ),
     },

@@ -50,3 +50,11 @@ export const dictListByTag = (client: Instance) =>
       url: `/dict/${tag}`,
       method: 'GET',
     })
+
+export const removeDict = (client: Instance) =>
+  async (id: String) =>
+    client.request({
+      url: `/dict/${id}`,
+      method: 'DELETE',
+    })
+    

@@ -1,7 +1,7 @@
 import axios, { CreateAxiosDefaults } from "axios"
 import { Instance } from "@/typings";
 import { getMe, login, logout, register } from "@/api/user";
-import { addDict, dictListByTag, dictTagPage } from "@/api/dict";
+import { addDict, dictListByTag, dictTagPage, removeDict } from "@/api/dict";
 
 export default (config: CreateAxiosDefaults) => {
   const instance: Instance = axios.create(config)
@@ -36,5 +36,9 @@ export default (config: CreateAxiosDefaults) => {
      * 查询字典目下的字典集合
      */
     dictListByTag: dictListByTag(instance),
+    /**
+     * 递归删除字典及其子级
+     */
+    removeDict: removeDict(instance),
   }
 }

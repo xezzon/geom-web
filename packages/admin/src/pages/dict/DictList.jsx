@@ -1,3 +1,6 @@
+/**
+ * @typedef {import('@/typings').Dict} Dict
+ */
 import { PlusOutlined } from '@ant-design/icons'
 import {
   Button, Space, Table, Spin, Modal,
@@ -10,8 +13,8 @@ import DictEditor from './DictEditor'
 
 /**
  * 字典列表
- * @param {object} param0
- * @param {import('@/api/dict').Dict} param0.tag
+ * @param {object} props
+ * @param {Dict} props.tag
  */
 function DictList({ tag }) {
   const [dataSource, setDataSource] = useState([])
@@ -43,7 +46,7 @@ function DictList({ tag }) {
     .then(list)
 
   /**
-   * @type {import('antd').TableColumnProps}
+   * @type {import('antd').TableColumnProps<Dict>[]}
    */
   const columns = [
     {

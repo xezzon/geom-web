@@ -21,7 +21,10 @@ function DictTagList({ onDetail }) {
     current: 1,
     pageSize: 15,
   })
-  const [sorter] = useState({})
+  const [sorter] = useState({
+    field: 'ordinal',
+    order: 'ASC',
+  })
   const [record, setRecord] = useState(/** @type {Dict} */(null))
 
   const commonQuery = useRef(null)
@@ -45,7 +48,7 @@ function DictTagList({ onDetail }) {
     .then(commonQuery.current.search)
 
   /**
-   * @type {import('antd').TableColumnProps}
+   * @type {import('antd').TableColumnProps<Dict>[]}
    */
   const columns = [
     {

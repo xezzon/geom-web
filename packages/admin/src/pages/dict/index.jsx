@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@xezzon/geom/dist/api/dict').Dict} Dict
+ * @typedef {import('@/typings').Dict} Dict
  */
 import { PageContainer } from '@ant-design/pro-components'
 import { Drawer } from 'antd'

@@ -5,10 +5,9 @@ import { PlusOutlined } from '@ant-design/icons'
 import {
   Button, Space, Table, Spin, Modal,
 } from 'antd'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRequest } from 'ahooks'
 import { adminClient } from '@/api'
-import CommonQuery from '@/component/CommonQuery'
 import DictEditor from './DictEditor'
 
 /**
@@ -18,12 +17,6 @@ import DictEditor from './DictEditor'
  */
 function DictList({ tag }) {
   const [dataSource, setDataSource] = useState([])
-  const [pagination] = useState({
-    hideOnSinglePage: true,
-    current: 1,
-    pageSize: 0,
-  })
-  const [sorter] = useState({})
   const [record, setRecord] = useState()
 
   const editorRef = useRef(null)
@@ -44,6 +37,10 @@ function DictList({ tag }) {
     .then(list)
   const removeDict = (id) => fetchRemoveDict(id)
     .then(list)
+  
+  useEffect(() => {
+    list()
+  }, [])
 
   /**
    * @type {import('antd').TableColumnProps<Dict>[]}
@@ -97,12 +94,6 @@ function DictList({ tag }) {
         >
           新增
         </Button>
-        <CommonQuery
-          columns={columns}
-          sorter={sorter}
-          pagination={pagination}
-          onQuery={list}
-        />
       </Space>
     </div>
   )
@@ -114,6 +105,7 @@ function DictList({ tag }) {
           columns={columns}
           rowKey="id"
           dataSource={dataSource}
+          pagination={false}
           title={Toolbar}
           sticky
         />

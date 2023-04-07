@@ -65,4 +65,10 @@ export const modifyDict = (client: Instance) =>
       method: 'PUT',
       data: dict
     })
-    
+
+export const dictByTagAndCode = (client: Instance) =>
+  async (tag: String, code: String): Promise<Response<Dict>> =>
+    client.request({
+      url: `/dict/${tag}/${code}`,
+      method: 'GET',
+    })

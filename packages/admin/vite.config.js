@@ -14,6 +14,7 @@ export default ({ mode }) => {
 
   return defineConfig({
     plugins: [react()],
+    base: env.GEOM_BASE_URL,
     resolve: {
       alias: [
         { find: '@', replacement: resolve(__dirname, './src') },

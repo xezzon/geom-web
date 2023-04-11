@@ -43,3 +43,32 @@ export const addDict = (client: Instance) =>
       method: 'POST',
       data: dict,
     })
+
+export const dictListByTag = (client: Instance) =>
+  async (tag: String) =>
+    client.request({
+      url: `/dict/${tag}`,
+      method: 'GET',
+    })
+
+export const removeDict = (client: Instance) =>
+  async (id: String) =>
+    client.request({
+      url: `/dict/${id}`,
+      method: 'DELETE',
+    })
+
+export const modifyDict = (client: Instance) =>
+  async (dict: Dict) =>
+    client.request({
+      url: `/dict`,
+      method: 'PUT',
+      data: dict
+    })
+
+export const dictByTagAndCode = (client: Instance) =>
+  async (tag: String, code: String): Promise<Response<Dict>> =>
+    client.request({
+      url: `/dict/${tag}/${code}`,
+      method: 'GET',
+    })

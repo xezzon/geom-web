@@ -1,6 +1,7 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { LoginForm, ProFormText } from "@ant-design/pro-components";
 import { adminClient } from "@/api";
+import { GeomSvg, SignUpSvg } from "@/assets/img";
 
 /**
  * 注册页
@@ -13,13 +14,13 @@ function SignUpPage() {
 
   return (
     <div style={{
-      backgroundImage: 'url(/bg-sign-up.svg)',
+      backgroundImage: `url(${SignUpSvg})`,
       backgroundRepeat: 'no-repeat',
       height: '100vh',
     }}>
       <LoginForm
         title="Geom"
-        logo="/geom.svg"
+        logo={GeomSvg}
         subTitle=" "
         submitter={{
           searchConfig: {

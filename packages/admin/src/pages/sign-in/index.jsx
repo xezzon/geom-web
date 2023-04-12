@@ -12,6 +12,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 import { adminClient } from "@/api"
+import { GeomSvg, SignInPng } from '@/assets/img'
 
 /**
  * 登录页
@@ -63,8 +64,8 @@ function SignInPage() {
   return (
     <div style={{ backgroundColor: 'white', height: '100vh' }}>
       <LoginFormPage
-        backgroundImageUrl="/bg-sign-in.png"
-        logo="/geom.svg"
+        backgroundImageUrl={SignInPng}
+        logo={GeomSvg}
         title="系统管理"
         subTitle=" "
         actions={(

@@ -1,0 +1,6 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+img,
+svg {
+  vertical-align: baseline;
+}

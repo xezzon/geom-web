@@ -45,10 +45,11 @@ export const addDict = (client: Instance) =>
     })
 
 export const dictListByTag = (client: Instance) =>
-  async (tag: String) =>
+  async (tag: String): Promise<Response<Dict[]>> =>
     client.request({
-      url: `/dict/${tag}`,
+      url: `/dict`,
       method: 'GET',
+      params: { tag },
     })
 
 export const removeDict = (client: Instance) =>

@@ -1,12 +1,14 @@
 /**
  * @typedef {import('@/typings').Dict} Dict
  */
-import { adminClient } from '@/api'
-import CommonQuery from '@/component/CommonQuery'
 import { PlusOutlined } from '@ant-design/icons'
 import { useRequest } from 'ahooks'
-import { Button, Modal, Space, Spin, Table } from 'antd'
+import {
+  Button, Modal, Space, Spin, Table,
+} from 'antd'
 import { useRef, useState } from 'react'
+import CommonQuery from '@/component/CommonQuery'
+import { adminClient } from '@/api'
 import DictEditor from './DictEditor'
 
 /**
@@ -30,7 +32,9 @@ function DictTagList({ onDetail }) {
   const commonQuery = useRef(null)
   const editorRef = useRef(null)
 
-  const { loading, runAsync: fetchDictTagPage } = useRequest(adminClient.dictTagPage, { manual: true })
+  const {
+    loading, runAsync: fetchDictTagPage,
+  } = useRequest(adminClient.dictTagPage, { manual: true })
   const { runAsync: fetchRemoveDict } = useRequest(adminClient.removeDict, { manual: true })
 
   const fetchPage = async (params) => fetchDictTagPage(params)

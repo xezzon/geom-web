@@ -1,4 +1,7 @@
-import { CommonQuery, Instance, Page, Response } from "@/typings";
+/* eslint-disable implicit-arrow-linebreak */
+import {
+  CommonQuery, Instance, Page, Response,
+} from '@/typings';
 
 export interface Dict {
   id: string;
@@ -45,15 +48,15 @@ export const addDict = (client: Instance) =>
     })
 
 export const dictListByTag = (client: Instance) =>
-  async (tag: String): Promise<Response<Dict[]>> =>
+  async (tag: string): Promise<Response<Dict[]>> =>
     client.request({
-      url: `/dict`,
+      url: '/dict',
       method: 'GET',
       params: { tag },
     })
 
 export const removeDict = (client: Instance) =>
-  async (id: String) =>
+  async (id: string) =>
     client.request({
       url: `/dict/${id}`,
       method: 'DELETE',
@@ -62,13 +65,13 @@ export const removeDict = (client: Instance) =>
 export const modifyDict = (client: Instance) =>
   async (dict: Dict) =>
     client.request({
-      url: `/dict`,
+      url: '/dict',
       method: 'PUT',
-      data: dict
+      data: dict,
     })
 
 export const dictByTagAndCode = (client: Instance) =>
-  async (tag: String, code: String): Promise<Response<Dict>> =>
+  async (tag: string, code: string): Promise<Response<Dict>> =>
     client.request({
       url: `/dict/${tag}/${code}`,
       method: 'GET',

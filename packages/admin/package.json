@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "lint": "eslint src --ext .js,.jsx",
     "build": "vite build",
     "preview": "vite preview",
     "image:build": "cross-var docker build -t geom/$npm_package_name:$npm_package_version ."
@@ -12,5 +13,6 @@
     "@xezzon/geom": "workspace:^"
   },
   "devDependencies": {
+    "eslint-config-geom": "workspace:^"
   }
 }

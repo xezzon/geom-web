@@ -5,7 +5,7 @@ import Layout from '@/component/Layout'
 import { nest } from '@/util/tree'
 
 /**
- * @typedef {import('react-router-dom').RouteObject[] 
+ * @typedef {import('react-router-dom').RouteObject[]
  * | import('@ant-design/pro-components').MenuDataItem[]} Routes
  */
 
@@ -19,7 +19,7 @@ const modules = import.meta.glob('/src/pages/**/*.jsx')
  */
 export const mainRoutes = nest(menus, (menus) => menus.map((menu) => {
   // 懒加载组件
-  let module = undefined
+  let module
   if (menu.key) {
     module = modules[`/src/pages${menu.key}.jsx`]
   } else {

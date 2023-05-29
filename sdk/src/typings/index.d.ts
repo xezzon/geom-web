@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 /**
  * 通用返回结果

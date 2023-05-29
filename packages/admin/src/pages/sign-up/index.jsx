@@ -1,7 +1,7 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { LoginForm, ProFormText } from "@ant-design/pro-components";
-import { adminClient } from "@/api";
-import { GeomSvg, SignUpSvg } from "@/assets/img";
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginForm, ProFormText } from '@ant-design/pro-components';
+import { adminClient } from '@/api';
+import { GeomSvg, SignUpSvg } from '@/assets/img';
 
 /**
  * 注册页
@@ -17,7 +17,8 @@ function SignUpPage() {
       backgroundImage: `url(${SignUpSvg})`,
       backgroundRepeat: 'no-repeat',
       height: '100vh',
-    }}>
+    }}
+    >
       <LoginForm
         title="Geom"
         logo={GeomSvg}
@@ -25,7 +26,7 @@ function SignUpPage() {
         submitter={{
           searchConfig: {
             submitText: '注册',
-          }
+          },
         }}
         onFinish={register}
       >
@@ -35,7 +36,7 @@ function SignUpPage() {
             placeholder="用户名"
             fieldProps={{
               size: 'large',
-              prefix: <UserOutlined className={'prefixIcon'} />,
+              prefix: <UserOutlined className="prefixIcon" />,
             }}
             rules={[
               {
@@ -49,7 +50,7 @@ function SignUpPage() {
             placeholder="密码"
             fieldProps={{
               size: 'large',
-              prefix: <LockOutlined className={'prefixIcon'} />,
+              prefix: <LockOutlined className="prefixIcon" />,
               visibilityToggle: false,
             }}
             rules={[
@@ -64,7 +65,7 @@ function SignUpPage() {
             placeholder="确认密码"
             fieldProps={{
               size: 'large',
-              prefix: <LockOutlined className={'prefixIcon'} />,
+              prefix: <LockOutlined className="prefixIcon" />,
               visibilityToggle: false,
             }}
             rules={[
@@ -77,8 +78,8 @@ function SignUpPage() {
                   if (!value || getFieldValue('plaintext') === value) {
                     return Promise.resolve()
                   }
-                  return Promise.reject('两次输入的密码不一致')
-                }
+                  return Promise.reject(new Error('两次输入的密码不一致'))
+                },
               }),
             ]}
           />

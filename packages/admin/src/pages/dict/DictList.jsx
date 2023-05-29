@@ -21,7 +21,9 @@ function DictList({ tag }) {
 
   const editorRef = useRef(null)
 
-  const { loading, runAsync: fetchDictListByTag } = useRequest(adminClient.dictListByTag, { manual: true })
+  const {
+    loading, runAsync: fetchDictListByTag,
+  } = useRequest(adminClient.dictListByTag, { manual: true })
   const { runAsync: fetchRemoveDict } = useRequest(adminClient.removeDict, { manual: true })
 
   const list = async () => fetchDictListByTag(tag.code)
@@ -37,7 +39,7 @@ function DictList({ tag }) {
     .then(list)
   const removeDict = (id) => fetchRemoveDict(id)
     .then(list)
-  
+
   useEffect(() => {
     list()
   }, [])
@@ -69,8 +71,9 @@ function DictList({ tag }) {
         <Space>
           <Button onClick={() => setRecord({
             parentId: record.id,
-            tag: tag.code
-          })}>
+            tag: tag.code,
+          })}
+          >
             新增
           </Button>
           <Button onClick={() => setRecord(record)}>修改</Button>

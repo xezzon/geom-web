@@ -6,7 +6,7 @@
  * @param {string} childrenProp
  * @returns {Array<T>}
  */
- function nest(tree, callback, childrenProp = 'children') {
+function nest(tree, callback, childrenProp = 'children') {
   return callback(tree).map((item) => {
     const children = item[childrenProp]
     if (!children) {

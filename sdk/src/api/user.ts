@@ -1,5 +1,5 @@
-import { Instance } from "@/typings";
-import { AxiosResponse } from "axios";
+import { AxiosResponse } from 'axios';
+import { Instance } from '@/typings';
 
 /**
  * 用户

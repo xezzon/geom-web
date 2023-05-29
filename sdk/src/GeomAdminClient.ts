@@ -1,13 +1,17 @@
-import axios, { CreateAxiosDefaults } from "axios"
-import { Instance } from "@/typings";
-import { getMe, login, logout, register } from "@/api/user";
-import { addDict, dictByTagAndCode, dictListByTag, dictTagPage, modifyDict, removeDict } from "@/api/dict";
+import axios, { CreateAxiosDefaults } from 'axios'
+import { Instance } from '@/typings';
+import {
+  getMe, login, logout, register,
+} from '@/api/user';
+import {
+  addDict, dictByTagAndCode, dictListByTag, dictTagPage, modifyDict, removeDict,
+} from '@/api/dict';
 
 export default (config: CreateAxiosDefaults) => {
   const instance: Instance = axios.create(config)
 
   return {
-    instance: instance,
+    instance,
     /**
      * 用户注册
      */

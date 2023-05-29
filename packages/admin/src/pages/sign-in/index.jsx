@@ -11,7 +11,7 @@ import {
 import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
-import { adminClient } from "@/api"
+import { adminClient } from '@/api'
 import { GeomSvg, SignInPng } from '@/assets/img'
 
 /**

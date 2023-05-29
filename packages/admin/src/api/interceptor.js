@@ -1,4 +1,4 @@
-import { message as messageApi } from "antd";
+import { message as messageApi } from 'antd';
 
 /**
  * 通用异常结构，输出错误到控制台并提示

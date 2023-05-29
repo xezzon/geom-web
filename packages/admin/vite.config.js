@@ -14,7 +14,7 @@ export default ({ mode }) => {
 
   return defineConfig({
     plugins: [react()],
-    base: env.GEOM_BASE_URL,
+    base: env.GEOM_ADMIN_PATH,
     resolve: {
       alias: [
         { find: '@', replacement: resolve(__dirname, './src') },
@@ -24,10 +24,10 @@ export default ({ mode }) => {
     envPrefix: envPrefix,
     server: {
       proxy: {
-        [env.GEOM_ADMIN_URL]: {
-          target: env.GEOM_ADMIN_SERVER,
+        [env.GEOM_ADMIN_API]: {
+          target: env.GEOM_ADMIN_HOST,
           changeOrigin: true,
-          rewrite: (path) => path.replace(env.GEOM_ADMIN_URL, ''),
+          rewrite: (path) => path.replace(env.GEOM_ADMIN_API, ''),
         },
       },
     },

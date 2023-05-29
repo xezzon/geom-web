@@ -4,15 +4,22 @@ import {
   Avatar, Dropdown, Space, Typography,
 } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { adminClient } from '@/api';
 import { useAuth } from '@/context/AuthContext';
 import { RequireAuth } from '@/component/RequireAuth'
-import { mainRoutes } from '@/router';
 import { filterDeep } from '@/util/tree';
 
-function Layout() {
+function Layout({ routes }) {
   const { pathname } = useLocation()
   const { user, signOut } = useAuth()
-  const filterRoutes = filterDeep(mainRoutes, (arr) => arr)
+  const filterRoutes = filterDeep(routes, (arr) => arr)
+
+  const logout = () => {
+    adminClient.logout()
+    signOut()
+    sessionStorage.removeItem('tokenValue')
+    localStorage.removeItem('tokenValue')
+  }
 
   return (
     <RequireAuth>
@@ -33,7 +40,7 @@ function Layout() {
                 {
                   key: 'signout',
                   icon: <LogoutOutlined />,
-                  label: (<Typography.Link onClick={signOut}>退出登录</Typography.Link>),
+                  label: (<Typography.Link onClick={logout}>退出登录</Typography.Link>),
                 },
               ],
             }}

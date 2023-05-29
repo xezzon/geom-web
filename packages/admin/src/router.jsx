@@ -1,5 +1,6 @@
 import * as Icons from '@ant-design/icons'
 import { createElement } from 'react'
+import { Outlet } from 'react-router-dom'
 import menus from '@/config/menu'
 import Layout from '@/component/Layout'
 import { nest } from '@/util/tree'
@@ -43,7 +44,7 @@ export const mainRoutes = nest(menus, (menus) => menus.map((menu) => {
 export const routes = [
   {
     path: '/',
-    Component: Layout,
+    element: <Layout routes={mainRoutes}><Outlet /></Layout>,
     children: mainRoutes,
   },
   {

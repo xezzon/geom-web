@@ -1,7 +1,6 @@
 import {
   createContext, useContext, useMemo, useState,
 } from 'react'
-import { adminClient } from '@/api'
 
 const AuthContext = createContext(null)
 
@@ -17,10 +16,7 @@ function AuthProvider({ children }) {
   }
 
   const signOut = () => {
-    adminClient.logout()
     setUser(null)
-    sessionStorage.removeItem('tokenValue')
-    localStorage.removeItem('tokenValue')
   }
 
   const value = useMemo(() => ({

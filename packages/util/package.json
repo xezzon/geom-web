@@ -1,5 +1,5 @@
 {
-  "name": "geom-core",
+  "name": "@geom/util",
   "private": true,
   "version": "0.0.0",
   "scripts": {},

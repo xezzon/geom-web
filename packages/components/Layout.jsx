@@ -1,13 +1,13 @@
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
+import { filterDeep } from '@geom/util/tree';
 import {
   Avatar, Dropdown, Space, Typography,
 } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+import { RequireAuth } from './RequireAuth'
 import { adminClient } from '@/api';
-import { useAuth } from '@/context/AuthContext';
-import { RequireAuth } from '@/component/RequireAuth'
-import { filterDeep } from '@/util/tree';
 
 function Layout({ routes }) {
   const { pathname } = useLocation()

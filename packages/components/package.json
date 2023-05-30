@@ -2,7 +2,13 @@
   "name": "@geom/components",
   "private": true,
   "version": "0.0.0",
-  "scripts": {},
-  "dependencies": {},
-  "devDependencies": {}
+  "scripts": {
+    "lint": "eslint . --ext .js,.jsx"
+  },
+  "dependencies": {
+    "@geom/util": "workspace:^"
+  },
+  "devDependencies": {
+    "eslint-config-geom": "workspace:^"
+  }
 }

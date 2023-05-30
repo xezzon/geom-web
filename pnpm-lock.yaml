@@ -69,6 +69,12 @@ importers:
 
   apps/admin:
     dependencies:
+      '@geom/components':
+        specifier: workspace:^
+        version: link:../../packages/components
+      '@geom/util':
+        specifier: workspace:^
+        version: link:../../packages/util
       '@xezzon/geom':
         specifier: workspace:^
         version: link:../../sdk
@@ -92,9 +98,21 @@ importers:
         specifier: ^7.32.2
         version: 7.32.2(eslint@8.41.0)
 
-  packages/components: {}
+  packages/components:
+    dependencies:
+      '@geom/util':
+        specifier: workspace:^
+        version: link:../util
+    devDependencies:
+      eslint-config-geom:
+        specifier: workspace:^
+        version: link:../../eslint
 
-  packages/util: {}
+  packages/util:
+    devDependencies:
+      eslint-config-geom:
+        specifier: workspace:^
+        version: link:../../eslint
 
   sdk:
     dependencies:

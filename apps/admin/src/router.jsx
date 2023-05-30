@@ -1,9 +1,9 @@
 import * as Icons from '@ant-design/icons'
+import Layout from '@geom/components/Layout'
+import { nest } from '@geom/util/tree'
 import { createElement } from 'react'
 import { Outlet } from 'react-router-dom'
 import menus from '@/config/menu'
-import Layout from '@/component/Layout'
-import { nest } from '@/util/tree'
 
 /**
  * @typedef {import('react-router-dom').RouteObject[]

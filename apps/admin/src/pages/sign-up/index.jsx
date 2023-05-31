@@ -1,7 +1,7 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
+import { GeomSvg, SignUpSvg } from '@geom/assets/img';
 import { adminClient } from '@/api';
-import { GeomSvg, SignUpSvg } from '@/assets/img';
 
 /**
  * 注册页

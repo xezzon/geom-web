@@ -4,6 +4,7 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components'
+import { GeomSvg, SignInPng } from '@geom/assets/img'
 import { useAuth } from '@geom/components/AuthContext'
 import { useLocalStorageState, useSessionStorageState, useTitle } from 'ahooks'
 import {
@@ -12,7 +13,6 @@ import {
 import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { adminClient } from '@/api'
-import { GeomSvg, SignInPng } from '@/assets/img'
 
 /**
  * 登录页

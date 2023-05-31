@@ -21,7 +21,8 @@ export default ({ mode }) => {
         { find: /^~/, replacement: '' },
       ],
     },
-    envPrefix: envPrefix,
+    envPrefix,
+    publicDir: 'node_modules/@geom/assets',
     server: {
       proxy: {
         [env.GEOM_ADMIN_API]: {

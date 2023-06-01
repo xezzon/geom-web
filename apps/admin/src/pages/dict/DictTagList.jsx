@@ -2,12 +2,12 @@
  * @typedef {import('@/typings').Dict} Dict
  */
 import { PlusOutlined } from '@ant-design/icons'
+import CommonQuery from '@geom/components/CommonQuery'
 import { useRequest } from 'ahooks'
 import {
   Button, Modal, Space, Spin, Table,
 } from 'antd'
 import { useRef, useState } from 'react'
-import CommonQuery from '@/component/CommonQuery'
 import { adminClient } from '@/api'
 import DictEditor from './DictEditor'
 

@@ -10,6 +10,9 @@
     "image:build": "cross-var docker build -t geom/$npm_package_name:$npm_package_version ."
   },
   "dependencies": {
+    "@geom/assets": "workspace:^",
+    "@geom/components": "workspace:^",
+    "@geom/util": "workspace:^",
     "@xezzon/geom": "workspace:^"
   },
   "devDependencies": {

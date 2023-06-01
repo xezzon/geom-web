@@ -1,5 +1,5 @@
+import { AuthProvider } from '@geom/components/AuthContext'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { AuthProvider } from '@/context/AuthContext'
 import { routes } from './router'
 
 function App() {

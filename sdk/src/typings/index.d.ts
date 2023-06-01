@@ -80,3 +80,4 @@ export declare type Instance = AxiosInstance
 export declare type Interceptor =
   (config: InternalAxiosRequestConfig<any>) => InternalAxiosRequestConfig<any>
 export declare type Response<T = any> = AxiosResponse<T>
+export declare type InstanceConfig = CreateAxiosDefaults

@@ -1,5 +1,5 @@
-import axios, { CreateAxiosDefaults } from 'axios'
-import { Instance } from '@/typings';
+import axios from 'axios'
+import { Instance, InstanceConfig } from '@/typings';
 import {
   getMe, login, logout, register,
 } from '@/api/user';
@@ -7,7 +7,7 @@ import {
   addDict, dictByTagAndCode, dictListByTag, dictTagPage, modifyDict, removeDict,
 } from '@/api/dict';
 
-export default (config: CreateAxiosDefaults) => {
+export default (config: InstanceConfig) => {
   const instance: Instance = axios.create(config)
 
   return {

@@ -1,5 +1,4 @@
-import { AxiosResponse } from 'axios';
-import { Instance } from '@/typings';
+import { Instance, Response } from '@/typings';
 
 /**
  * 用户
@@ -16,7 +15,7 @@ export interface User {
 }
 
 export const register = (client: Instance) =>
-  async (user: Partial<User>) =>
+  async (user: User) =>
     client.request({
       url: '/register',
       method: 'POST',
@@ -24,14 +23,14 @@ export const register = (client: Instance) =>
     })
 
 export const getMe = (client: Instance) =>
-  async (): Promise<AxiosResponse<User, void>> =>
+  async (): Promise<Response<User>> =>
     client.request({
       url: '/me',
       method: 'GET',
     })
 
 export const login = (client: Instance) =>
-  async (user: Partial<User>) =>
+  async (user: User) =>
     client.request({
       url: '/login',
       method: 'POST',

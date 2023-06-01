@@ -14,9 +14,9 @@ import {
  * 通用查询组件
  * @param {object} props
  * @param {import("antd/lib/table").ColumnProps[]} props.columns
- * @param {{ field: string, order: string }} props.sorter
- * @param {string} props.filter
- * @param {{ current: number, pageSize: number }} props.pagination
+ * @param {{ field: string, order: string }} [props.sorter]
+ * @param {string} [props.filter]
+ * @param {{ current: number, pageSize: number }} [props.pagination]
  * @param {Function} props.onQuery
  */
 function CommonQuery({
@@ -86,6 +86,9 @@ function CommonQuery({
    * 排序表达式
    */
   const sortExpression = useMemo(() => {
+    if (!sorter) {
+      return []
+    }
     const sorter1 = Array.isArray(sorter) ? sorter : [sorter]
     return sorter1
       .filter(({ field, order }) => field && order)

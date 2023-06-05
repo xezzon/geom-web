@@ -2,5 +2,9 @@
   "extends": "../jsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
-  }
+  },
+  "references": [
+    { "path": "../../packages/components" },
+    { "path": "../../packages/util" },
+  ]
 }

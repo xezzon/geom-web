@@ -3,18 +3,18 @@
     "path": "/",
     "name": "首页",
     "key": "/home/index",
-    "icon": "HomeOutlined",
+    "icon": "ant-design:home-outlined",
     "index": true
   },
   {
     "path": "/dict",
     "name": "字典",
-    "icon": "BookOutlined"
+    "icon": "ant-design:book-outlined"
   },
   {
     "path": "/auth",
     "name": "权限管理",
-    "icon": "MenuOutlined",
+    "icon": "ant-design:menu-outlined",
     "children": [
       {
         "path": "/auth/menu",

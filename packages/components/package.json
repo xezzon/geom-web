@@ -6,6 +6,7 @@
     "lint": "eslint . --ext .js,.jsx"
   },
   "dependencies": {
+    "@geom/assets": "workspace:^",
     "@geom/util": "workspace:^"
   },
   "devDependencies": {

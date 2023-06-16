@@ -1,4 +1,4 @@
-import * as Icons from '@ant-design/icons'
+import { Icon } from '@iconify/react'
 import { createElement } from 'react'
 import { nest } from './tree'
 
@@ -19,7 +19,7 @@ export function menus2routes(menus, modules) {
     // 图标
     let icon = createElement('span')
     if (menu.icon) {
-      icon = createElement(Icons[menu.icon])
+      icon = createElement(Icon, { icon: menu.icon })
     }
     return {
       ...menu,

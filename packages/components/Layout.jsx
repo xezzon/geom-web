@@ -1,5 +1,6 @@
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
+import { GeomSvg } from '@geom/assets/img'
 import { filterDeep } from '@geom/util/tree';
 import {
   Avatar, Dropdown, Space, Typography,
@@ -28,6 +29,7 @@ function Layout({ routes }) {
         fixSiderbar
         fixHeader
         title="系统管理"
+        logo={GeomSvg}
         route={{ path: '/', routes: filterRoutes }}
         location={{ pathname }}
         menu={{ autoClose: false }}

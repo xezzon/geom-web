@@ -5,7 +5,7 @@ import { routes } from './router'
 function App() {
   const router = createBrowserRouter(routes, {
     // eslint-disable-next-line no-underscore-dangle
-    basename: window.__MICRO_APP_BASE_ROUTE__ ?? import.meta.env.GEOM_ADMIN_PATH,
+    basename: window.__MICRO_APP_BASE_ROUTE__ ?? import.meta.env.GEOM_CONTECT_PATH,
   })
 
   return (

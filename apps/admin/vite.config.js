@@ -30,6 +30,11 @@ export default ({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(env.GEOM_ADMIN_API, ''),
         },
+        [env.GEOM_OPENAPI_API]: {
+          target: env.GEOM_OPENAPI_HOST,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(env.GEOM_OPENAPI_API, ''),
+        },
       },
     },
   })

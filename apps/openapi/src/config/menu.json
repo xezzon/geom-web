@@ -1,0 +1,9 @@
+[
+  {
+    "path": "/",
+    "name": "首页",
+    "key": "/home/index",
+    "icon": "ant-design:home-outlined",
+    "index": true
+  }
+]

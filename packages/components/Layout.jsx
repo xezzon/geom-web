@@ -7,7 +7,6 @@ import {
 } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import { RequireAuth } from './RequireAuth'
 import { adminClient } from '@/api';
 
 function Layout({ routes }) {
@@ -23,41 +22,39 @@ function Layout({ routes }) {
   }
 
   return (
-    <RequireAuth>
-      <ProLayout
-        layout="mix"
-        fixSiderbar
-        fixHeader
-        title="系统管理"
-        logo={GeomSvg}
-        route={{ path: '/', routes: filterRoutes }}
-        location={{ pathname }}
-        menu={{ autoClose: false }}
-        menuItemRender={(item, dom) => <Link to={item.path}>{dom}</Link>}
-        actionsRender={() => [
-          <Dropdown
-            key="avatar"
-            menu={{
-              items: [
-                {
-                  key: 'signout',
-                  icon: <LogoutOutlined />,
-                  label: (<Typography.Link onClick={logout}>退出登录</Typography.Link>),
-                },
-              ],
-            }}
-          >
-            <Space>
-              <Avatar size="small" icon={<UserOutlined />} />
-              <Typography.Text>{user?.nickname}</Typography.Text>
-            </Space>
-          </Dropdown>,
-        ]}
-        className="min-vh-100"
-      >
-        <Outlet />
-      </ProLayout>
-    </RequireAuth>
+    <ProLayout
+      layout="mix"
+      fixSiderbar
+      fixHeader
+      title={import.meta.env.GEOM_TITLE}
+      logo={GeomSvg}
+      route={{ path: '/', routes: filterRoutes }}
+      location={{ pathname }}
+      menu={{ autoClose: false }}
+      menuItemRender={(item, dom) => <Link to={item.path}>{dom}</Link>}
+      actionsRender={() => [
+        <Dropdown
+          key="avatar"
+          menu={{
+            items: [
+              {
+                key: 'signout',
+                icon: <LogoutOutlined />,
+                label: (<Typography.Link onClick={logout}>退出登录</Typography.Link>),
+              },
+            ],
+          }}
+        >
+          <Space>
+            <Avatar size="small" icon={<UserOutlined />} />
+            <Typography.Text>{user?.nickname}</Typography.Text>
+          </Space>
+        </Dropdown>,
+      ]}
+      className="min-vh-100"
+    >
+      <Outlet />
+    </ProLayout>
   )
 }
 

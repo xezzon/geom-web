@@ -1,0 +1,21 @@
+{
+  "name": "geom-openapi",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "lint": "eslint src --ext .js,.jsx",
+    "build": "vite build",
+    "preview": "vite preview",
+    "image:build": "cross-var docker build -t geom/$npm_package_name:$npm_package_version ."
+  },
+  "dependencies": {
+    "@geom/assets": "workspace:^",
+    "@geom/components": "workspace:^",
+    "@geom/util": "workspace:^",
+    "@xezzon/geom": "workspace:^"
+  },
+  "devDependencies": {
+    "eslint-config-geom": "workspace:^"
+  }
+}

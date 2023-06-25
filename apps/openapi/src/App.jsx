@@ -1,6 +1,7 @@
 import { AuthProvider } from '@geom/components/AuthContext'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { routes } from './router'
+import { GroupProvider } from '@/components/GroupContext'
 
 function App() {
   const router = createBrowserRouter(routes, {
@@ -11,7 +12,9 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <GroupProvider>
+          <RouterProvider router={router} />
+        </GroupProvider>
       </AuthProvider>
     </>
   )

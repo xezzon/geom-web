@@ -1,6 +1,6 @@
-import Layout from '@geom/components/Layout'
 import { menus2routes } from '@geom/util/menu'
 import { Outlet } from 'react-router-dom'
+import Layout from '@/components/Layout'
 import menus from '@/config/menu'
 
 /**
@@ -14,8 +14,6 @@ const modules = import.meta.glob('/src/pages/**/*.jsx')
  * @type {Routes}
  */
 export const mainRoutes = menus2routes(menus, modules)
-
-console.debug(mainRoutes)
 
 /**
  * @type {Routes}

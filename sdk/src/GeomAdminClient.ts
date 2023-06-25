@@ -6,6 +6,7 @@ import {
 import {
   addDict, dictByTagAndCode, dictListByTag, dictTagPage, modifyDict, removeDict,
 } from '@/api/dict';
+import { getMyGroups } from './api/group';
 
 export default (config: InstanceConfig) => {
   const instance: Instance = axios.create(config)
@@ -52,5 +53,9 @@ export default (config: InstanceConfig) => {
      * 通过字典目和字典码查询字典信息
      */
     dictByTagAndCode: dictByTagAndCode(instance),
+    /**
+     * 查询当前用户所在用户组列表
+     */
+    getMyGroups: getMyGroups(instance),
   }
 }

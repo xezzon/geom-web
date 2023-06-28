@@ -21,5 +21,10 @@
         "name": "菜单"
       }
     ]
+  },
+  {
+    "path": "/openapi",
+    "name": "对外接口",
+    "icon": "ant-design:api-outlined"
   }
 ]

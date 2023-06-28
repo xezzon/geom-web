@@ -6,7 +6,7 @@ import {
 import {
   addDict, dictByTagAndCode, dictListByTag, dictTagPage, modifyDict, removeDict,
 } from '@/api/dict';
-import { getMyGroups } from './api/group';
+import { generateSecretKey, getMyGroups } from './api/group';
 
 export default (config: InstanceConfig) => {
   const instance: Instance = axios.create(config)
@@ -57,5 +57,9 @@ export default (config: InstanceConfig) => {
      * 查询当前用户所在用户组列表
      */
     getMyGroups: getMyGroups(instance),
+    /**
+     * 重置用户组密钥
+     */
+    generateSecretKey: generateSecretKey(instance),
   }
 }

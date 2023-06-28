@@ -1,3 +1,4 @@
+import { KJUR, KEYUTIL } from 'jsrsasign'
 import { Instance, Response } from '@/typings';
 
 export interface Group {
@@ -26,3 +27,20 @@ export const getMyGroups = (client: Instance) =>
       url: '/user-group',
       method: 'GET',
     })
+
+export const generateSecretKey = (client: Instance) =>
+  async (groupId: string): Promise<string> => {
+    const { prvKeyObj, pubKeyObj } = KEYUTIL.generateKeypair('RSA', 2048)
+    const pemExported = KEYUTIL.getPEM(pubKeyObj)
+
+    return client.request({
+      url: `/user-group/${groupId}/secret-key`,
+      method: 'PATCH',
+      data: { publicKey: pemExported },
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+      .then(({ data }) => data)
+      .then((cipherText: string) => KJUR.crypto.Cipher.decrypt(cipherText, prvKeyObj, 'RSA'))
+  }

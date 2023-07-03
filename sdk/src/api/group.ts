@@ -1,5 +1,8 @@
 import { KJUR, KEYUTIL } from 'jsrsasign'
-import { Instance, Response } from '@/typings';
+import {
+  CommonQuery, Instance, Page, Response,
+} from '@/typings';
+import { User } from './user';
 
 export interface Group {
   id: string,
@@ -44,3 +47,19 @@ export const generateSecretKey = (client: Instance) =>
       .then(({ data }) => data)
       .then((cipherText: string) => KJUR.crypto.Cipher.decrypt(cipherText, prvKeyObj, 'RSA'))
   }
+
+export const groupMemberPage = (client: Instance) =>
+  async (groupId: string, params: CommonQuery): Promise<Response<Page<User>>> =>
+    client.request({
+      url: `/user-group/${groupId}/member`,
+      method: 'GET',
+      params,
+    })
+
+export const removeGroupMember = (client: Instance) =>
+  async (groupId: string, userIds: string[]) =>
+    client.request({
+      url: `/user-group/${groupId}/member`,
+      method: 'DELETE',
+      data: userIds,
+    })

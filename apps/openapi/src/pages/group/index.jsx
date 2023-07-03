@@ -3,6 +3,7 @@ import { Button } from 'antd'
 import { useState } from 'react'
 import { useGroup } from '@/components/GroupContext'
 import { adminClient } from '@/api'
+import GroupMemberList from './GroupMemberList'
 
 function GroupPage() {
   const [secretKey, setSecretKey] = useState('')
@@ -38,7 +39,7 @@ function GroupPage() {
           { key: 'member', tab: '团队成员' },
         ]}
       >
-        <></>
+        <GroupMemberList />
       </PageContainer>
     </>
   )

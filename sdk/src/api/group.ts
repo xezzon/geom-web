@@ -56,6 +56,13 @@ export const groupMemberPage = (client: Instance) =>
       params,
     })
 
+export const joinGroup = (client: Instance) =>
+  async (groupId: string, userId: string) =>
+    client.request({
+      url: `/user-group/${groupId}/member/${userId}`,
+      method: 'POST',
+    })
+
 export const removeGroupMember = (client: Instance) =>
   async (groupId: string, userIds: string[]) =>
     client.request({

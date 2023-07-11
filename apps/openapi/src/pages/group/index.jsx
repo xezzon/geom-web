@@ -1,31 +1,10 @@
 import { PageContainer } from '@ant-design/pro-components'
-import { Button } from 'antd'
-import { useState } from 'react'
 import { useGroup } from '@/components/GroupContext'
-import { adminClient } from '@/api'
 import GroupMemberList from './GroupMemberList'
+import GroupInfo from './GroupInfo'
 
 function GroupPage() {
-  const [secretKey, setSecretKey] = useState('')
   const { currentGroup } = useGroup()
-
-  const refreshSecretKey = () => {
-    adminClient.generateSecretKey(currentGroup?.id)
-      .then((secretKey) => {
-        setSecretKey(secretKey)
-      })
-  }
-
-  const GroupContent = (
-    <>
-      <p>{`团队名称: ${currentGroup?.name}`}</p>
-      <p>{`Access Key: ${currentGroup?.accessKey}`}</p>
-      <p>
-        {`Secret Key: ${secretKey || '*'.repeat(16)}`}
-        <Button type="link" danger onClick={refreshSecretKey}>刷新</Button>
-      </p>
-    </>
-  )
 
   return (
     <>
@@ -34,13 +13,12 @@ function GroupPage() {
         header={{
           breadcrumb: {},
         }}
-        content={GroupContent}
+        content={<p>{`团队名称: ${currentGroup?.name}`}</p>}
         tabList={[
-          { key: 'member', tab: '团队成员' },
+          { key: 'info', tab: '团队信息', children: <GroupInfo /> },
+          { key: 'member', tab: '团队成员', children: <GroupMemberList /> },
         ]}
-      >
-        <GroupMemberList />
-      </PageContainer>
+      />
     </>
   )
 }

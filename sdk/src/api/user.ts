@@ -4,6 +4,7 @@ import { Instance, Response } from '@/typings';
  * 用户
  */
 export interface User {
+  id: string,
   /**
    * 用户名
    */
@@ -12,6 +13,10 @@ export interface User {
    * 密码
    */
   plaintext: string,
+  /**
+   * 用户昵称
+   */
+  nickname: string,
 }
 
 export const register = (client: Instance) =>
@@ -42,4 +47,12 @@ export const logout = (client: Instance) =>
     client.request({
       url: '/logout',
       method: 'POST',
+    })
+
+export const searchUser = (client: Instance) =>
+  async (searchValue: string): Promise<Response<User[]>> =>
+    client.request({
+      url: '/user/search',
+      method: 'GET',
+      params: { searchValue },
     })

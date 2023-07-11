@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 
 /**
  * 通用返回结果
@@ -77,7 +77,8 @@ export interface Page<T> {
 
 /* 统一定义为抽象类型 暂时使用 Axios 实现 */
 export declare type Instance = AxiosInstance
-export declare type Interceptor =
-  (config: InternalAxiosRequestConfig<any>) => InternalAxiosRequestConfig<any>
-export declare type Response<T = any> = AxiosResponse<T>
+export declare type Response<T> = AxiosResponse<T>
 export declare type InstanceConfig = CreateAxiosDefaults
+export interface RequestInstance<T, R> {
+  (client: AxiosInstance): (...args: T) => Promise<AxiosResponse<R>>
+}

@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { Instance, InstanceConfig } from '@/typings';
+import { InstanceConfig } from '@/typings';
 import { addOpenapi, openapiPage } from './api/openapi';
 
 export default (config: InstanceConfig) => {
-  const instance: Instance = axios.create(config)
+  const instance = axios.create(config)
 
   return {
     instance,

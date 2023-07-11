@@ -2,9 +2,13 @@ import {
   Button, Space, Spin, Table,
 } from 'antd'
 import { useRequest } from 'ahooks'
-import { forwardRef, useEffect, useState } from 'react'
+import {
+  forwardRef, useEffect, useRef, useState,
+} from 'react'
+import { PlusOutlined } from '@ant-design/icons'
 import { useGroup } from '@/components/GroupContext'
 import { adminClient } from '@/api'
+import UserSelect from './UserSelect'
 
 function GroupMemberList() {
   const [dataSource, setDataSource] = useState(([]))
@@ -18,8 +22,13 @@ function GroupMemberList() {
     loading, runAsync: fetchGroupMemberPage,
   } = useRequest(adminClient.groupMemberPage, { manual: true })
   const {
-    runAsync: fetchRemoveGroupMember,
+    runAsync: _removeGroupMember,
   } = useRequest(adminClient.removeGroupMember, { manual: true })
+  const {
+    runAsync: _joinGroup,
+  } = useRequest(adminClient.joinGroup, { manual: true })
+
+  const userSelectRef = useRef(null)
 
   const fetchPage = () => {
     fetchGroupMemberPage(currentGroup?.id, {
@@ -36,7 +45,15 @@ function GroupMemberList() {
       })
   }
   const removeGroupMember = (memberId) => {
-    fetchRemoveGroupMember(currentGroup?.id, memberId)
+    _removeGroupMember(currentGroup?.id, memberId)
+      .then(fetchPage)
+  }
+  /**
+   *
+   * @param {import('@xezzon/geom/dist/api/user').User} user
+   */
+  const joinGroup = (user) => {
+    _joinGroup(currentGroup?.id, user.id)
       .then(fetchPage)
   }
 
@@ -71,6 +88,23 @@ function GroupMemberList() {
     },
   ]
 
+  const Toolbar = () => (
+    <div className="d-flex justify-content-between">
+      <div />
+      <Space>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => {
+            userSelectRef.current.open()
+          }}
+        >
+          新增
+        </Button>
+      </Space>
+    </div>
+  )
+
   return (
     <>
       <Spin spinning={loading}>
@@ -78,11 +112,17 @@ function GroupMemberList() {
           columns={columns}
           rowKey="id"
           dataSource={dataSource}
+          title={Toolbar}
           pagination={pagination}
           sticky
           onChange={(pagination) => setPagination(pagination)}
         />
       </Spin>
+      <UserSelect
+        title={`添加成员到 ${currentGroup?.name}`}
+        onFinish={joinGroup}
+        ref={userSelectRef}
+      />
     </>
   )
 }

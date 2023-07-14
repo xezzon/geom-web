@@ -22,7 +22,6 @@ export default ({ mode }) => {
       ],
     },
     envPrefix,
-    publicDir: 'node_modules/@geom/assets',
     server: {
       proxy: {
         [env.GEOM_ADMIN_API]: {

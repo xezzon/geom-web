@@ -31,7 +31,7 @@ function GroupMemberList() {
   const userSelectRef = useRef(null)
 
   const fetchPage = () => {
-    fetchGroupMemberPage(currentGroup?.id, {
+    fetchGroupMemberPage(currentGroup.id, {
       pageNum: pagination?.current,
       pageSize: pagination?.pageSize,
     })
@@ -45,7 +45,7 @@ function GroupMemberList() {
       })
   }
   const removeGroupMember = (memberId) => {
-    _removeGroupMember(currentGroup?.id, memberId)
+    _removeGroupMember(currentGroup.id, memberId)
       .then(fetchPage)
   }
   /**
@@ -53,7 +53,7 @@ function GroupMemberList() {
    * @param {import('@xezzon/geom/dist/api/user').User} user
    */
   const joinGroup = (user) => {
-    _joinGroup(currentGroup?.id, user.id)
+    _joinGroup(currentGroup.id, user.id)
       .then(fetchPage)
   }
 
@@ -119,7 +119,7 @@ function GroupMemberList() {
         />
       </Spin>
       <UserSelect
-        title={`添加成员到 ${currentGroup?.name}`}
+        title={`添加成员到 ${currentGroup.name}`}
         onFinish={joinGroup}
         ref={userSelectRef}
       />

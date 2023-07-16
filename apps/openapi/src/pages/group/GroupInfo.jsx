@@ -1,13 +1,14 @@
 import { Button } from 'antd';
 import { useState } from 'react';
 import { useGroup } from '@/components/GroupContext';
+import { adminClient } from '@/api';
 
 function GroupInfo() {
   const [secretKey, setSecretKey] = useState('')
   const { currentGroup } = useGroup()
 
   const refreshSecretKey = () => {
-    adminClient.generateSecretKey(currentGroup?.id)
+    adminClient.generateSecretKey(currentGroup.id)
       .then((secretKey) => {
         setSecretKey(secretKey)
       })
@@ -15,7 +16,7 @@ function GroupInfo() {
 
   return (
     <>
-      <p>{`Access Key: ${currentGroup?.accessKey}`}</p>
+      <p>{`Access Key: ${currentGroup.accessKey}`}</p>
       <p>
         {`Secret Key: ${secretKey || '*'.repeat(16)}`}
         <Button type="link" danger onClick={refreshSecretKey}>刷新</Button>

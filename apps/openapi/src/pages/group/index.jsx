@@ -13,7 +13,7 @@ function GroupPage() {
         header={{
           breadcrumb: {},
         }}
-        content={<p>{`团队名称: ${currentGroup?.name}`}</p>}
+        content={<p>{`团队名称: ${currentGroup.name}`}</p>}
         tabList={[
           { key: 'info', tab: '团队信息', children: <GroupInfo /> },
           { key: 'member', tab: '团队成员', children: <GroupMemberList /> },

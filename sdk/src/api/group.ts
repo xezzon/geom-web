@@ -31,6 +31,14 @@ export const getMyGroups = (client: Instance) =>
       method: 'GET',
     })
 
+export const addUserGroup = (client: Instance) =>
+  async (group: Omit<Group, 'id' | 'ownerId'>) =>
+    client.request({
+      url: '/user-group',
+      method: 'POST',
+      data: group,
+    })
+
 export const generateSecretKey = (client: Instance) =>
   async (groupId: string): Promise<string> => {
     const { prvKeyObj, pubKeyObj } = KEYUTIL.generateKeypair('RSA', 2048)

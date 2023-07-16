@@ -1,6 +1,7 @@
 import {
   createContext, useContext, useEffect, useMemo, useState,
 } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { adminClient } from '@/api'
 
 const GroupContext = createContext(null)
@@ -12,11 +13,16 @@ function useGroup() {
 function GroupProvider({ children }) {
   const [groups, setGroups] = useState([])
   const [current, toggleGroup] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     adminClient.getMyGroups()
       .then(({ data }) => {
         setGroups(data)
+        if (data.length === 0) {
+          navigate('/group/new')
+          return;
+        }
         toggleGroup(data[0].id)
       })
   }, [])

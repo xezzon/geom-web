@@ -7,6 +7,7 @@ import {
   addDict, dictByTagAndCode, dictListByTag, dictTagPage, modifyDict, removeDict,
 } from '@/api/dict';
 import {
+  addUserGroup,
   generateSecretKey, getMyGroups, groupMemberPage, joinGroup, removeGroupMember,
 } from './api/group';
 
@@ -63,6 +64,10 @@ export default (config: InstanceConfig) => {
      * 查询当前用户所在用户组列表
      */
     getMyGroups: getMyGroups(instance),
+    /**
+     * 新增用户组
+     */
+    addUserGroup: addUserGroup(instance),
     /**
      * 重置用户组密钥
      */

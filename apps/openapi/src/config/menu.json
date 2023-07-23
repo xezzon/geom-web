@@ -5,5 +5,15 @@
     "key": "/home/index",
     "icon": "ant-design:home-outlined",
     "index": true
+  },
+  {
+    "path": "/group",
+    "name": "团队信息",
+    "icon": "ant-design:team-outlined"
+  },
+  {
+    "path": "/instance",
+    "name": "已订阅接口",
+    "icon": "ant-design:api-outlined"
   }
 ]

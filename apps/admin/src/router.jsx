@@ -1,7 +1,7 @@
-import Layout from '@geom/components/Layout'
 import { RequireAuth } from '@geom/components/RequireAuth'
 import { menus2routes } from '@geom/util/menu'
 import { Outlet } from 'react-router-dom'
+import Layout from '@/components/Layout'
 import menus from '@/config/menu'
 
 /**

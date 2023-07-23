@@ -1,14 +1,18 @@
 import axios from 'axios'
-import { Instance, InstanceConfig } from '@/typings';
+import { InstanceConfig } from '@/typings';
 import {
-  getMe, login, logout, register,
+  getMe, login, logout, register, searchUser,
 } from '@/api/user';
 import {
   addDict, dictByTagAndCode, dictListByTag, dictTagPage, modifyDict, removeDict,
 } from '@/api/dict';
+import {
+  addUserGroup,
+  generateSecretKey, getMyGroups, groupMemberPage, joinGroup, removeGroupMember,
+} from './api/group';
 
 export default (config: InstanceConfig) => {
-  const instance: Instance = axios.create(config)
+  const instance = axios.create(config)
 
   return {
     instance,
@@ -28,6 +32,10 @@ export default (config: InstanceConfig) => {
      * 退出登录
      */
     logout: logout(instance),
+    /**
+     * 搜索用户
+     */
+    searchUser: searchUser(instance),
     /**
      * 字典目列表（分页）
      */
@@ -52,5 +60,29 @@ export default (config: InstanceConfig) => {
      * 通过字典目和字典码查询字典信息
      */
     dictByTagAndCode: dictByTagAndCode(instance),
+    /**
+     * 查询当前用户所在用户组列表
+     */
+    getMyGroups: getMyGroups(instance),
+    /**
+     * 新增用户组
+     */
+    addUserGroup: addUserGroup(instance),
+    /**
+     * 重置用户组密钥
+     */
+    generateSecretKey: generateSecretKey(instance),
+    /**
+     * 查询用户组成员（分页）
+     */
+    groupMemberPage: groupMemberPage(instance),
+    /**
+     * 加入用户组
+     */
+    joinGroup: joinGroup(instance),
+    /**
+     * 移除用户组成员
+     */
+    removeGroupMember: removeGroupMember(instance),
   }
 }

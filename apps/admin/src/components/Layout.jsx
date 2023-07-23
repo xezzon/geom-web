@@ -6,7 +6,7 @@ import {
   Avatar, Dropdown, Space, Typography,
 } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import { useAuth } from '@geom/components/AuthContext';
 import { adminClient } from '@/api';
 
 function Layout({ routes }) {

@@ -14,9 +14,15 @@
     ]
   },
   {
-    "path": "instance",
-    "fullPath": "/instance",
+    "path": "api",
+    "fullPath": "/api",
     "name": "已订阅接口",
     "icon": "ant-design:api-outlined"
+  },
+  {
+    "path": "webhook",
+    "fullPath": "/webhook",
+    "name": "WEBHOOK",
+    "icon": "ant-design:node-index-outlined"
   }
 ]

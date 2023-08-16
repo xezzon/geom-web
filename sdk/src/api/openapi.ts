@@ -14,6 +14,14 @@ export interface Openapi {
   type: OpenapiType,
 }
 
+export interface OpenapiInstance {
+  id: string,
+  apiId: string,
+  apiName: string,
+  callback: string,
+  owner: string,
+}
+
 export const openapiPage = (client: Instance) =>
   async (params: CommonQuery): Promise<Response<Page<Openapi>>> =>
     client.request({
@@ -28,4 +36,12 @@ export const addOpenapi = (client: Instance) =>
       url: '/openapi',
       method: 'POST',
       data: openapi,
+    })
+
+export const openapiInstancePage = (client: Instance) =>
+  async (params: CommonQuery): Promise<Response<Page<OpenapiInstance>>> =>
+    client.request({
+      url: '/openapi/instance',
+      method: 'GET',
+      params,
     })

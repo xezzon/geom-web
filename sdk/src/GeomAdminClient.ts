@@ -10,6 +10,7 @@ import {
   addUserGroup,
   generateSecretKey, getMyGroups, groupMemberPage, joinGroup, removeGroupMember,
 } from './api/group';
+import { addMenu, menuTree, modifyMenu } from './api/menu';
 
 export default (config: InstanceConfig) => {
   const instance = axios.create(config)
@@ -84,5 +85,17 @@ export default (config: InstanceConfig) => {
      * 移除用户组成员
      */
     removeGroupMember: removeGroupMember(instance),
+    /**
+     * 获取菜单（树形结构）
+     */
+    menuTree: menuTree(instance),
+    /**
+     * 新增菜单
+     */
+    addMenu: addMenu(instance),
+    /**
+     * 修改菜单
+     */
+    modifyMenu: modifyMenu(instance),
   }
 }

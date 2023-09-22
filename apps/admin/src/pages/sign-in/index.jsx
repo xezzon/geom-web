@@ -119,7 +119,7 @@ function SignInPage() {
           ]}
         />
         <ProFormText.Password
-          name="cipher"
+          name="plaintext"
           fieldProps={{
             size: 'large',
             prefix: <LockOutlined className="prefixIcon" />,

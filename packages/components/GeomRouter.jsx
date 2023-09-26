@@ -9,6 +9,7 @@ import { Icon } from '@iconify/react'
 import { nest } from '@geom/util/tree'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Skeleton } from 'antd'
+import { useAuth } from './AuthContext'
 import { adminClient } from '@/api'
 
 const modules = import.meta.glob(`/src/pages/**/*.jsx`)
@@ -57,12 +58,14 @@ function useMenu() {
 function GeomRouter({ children, staticRoutes }) {
   const [menus, setMenus] = useState(/** @type {Routes} */([]))
   const [loading, setLoading] = useState(true)
+  const { isLogin } = useAuth()
 
   const fetchMenuTree = () => {
     setLoading(true)
     adminClient.menuTree()
-      .then(({ data }) => {
-        setMenus(menus2routes(data))
+      .then(({ data }) => menus2routes(data))
+      .then((menus) => {
+        setMenus(menus)
       })
       .finally(() => {
         setLoading(false)
@@ -89,7 +92,7 @@ function GeomRouter({ children, staticRoutes }) {
 
   useEffect(() => {
     fetchMenuTree()
-  }, [])
+  }, [isLogin])
 
   return (
     <MenuContext.Provider value={value}>

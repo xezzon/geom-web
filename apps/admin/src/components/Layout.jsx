@@ -17,8 +17,6 @@ function Layout() {
   const logout = () => {
     adminClient.logout()
     signOut()
-    sessionStorage.removeItem('tokenValue')
-    localStorage.removeItem('tokenValue')
   }
 
   return (

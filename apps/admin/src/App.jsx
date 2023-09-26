@@ -1,8 +1,8 @@
-import { AuthProvider } from '@geom/components/AuthContext'
+import { AuthProvider, RequireAuth } from '@geom/components/AuthContext'
 import { Outlet } from 'react-router-dom'
 import { GeomRouter } from '@geom/components/GeomRouter'
-import { RequireAuth } from '@geom/components/RequireAuth'
 import Layout from './components/Layout'
+import { adminClient } from './api'
 
 function App() {
   const routes = [
@@ -20,7 +20,7 @@ function App() {
 
   return (
     <>
-      <AuthProvider>
+      <AuthProvider getMe={adminClient.getMe}>
         <GeomRouter staticRoutes={routes}>
           <RequireAuth>
             <Layout>

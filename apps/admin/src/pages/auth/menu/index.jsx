@@ -104,6 +104,7 @@ function MenuPage() {
       >
         <Table
           columns={columns}
+          rowKey="id"
           dataSource={menus}
           title={Toolbar}
         />

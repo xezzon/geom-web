@@ -14,11 +14,13 @@ const modules = import.meta.glob('/src/pages/**/*.jsx')
 
 /**
  * @type {Routes}
+ * @deprecated
  */
 export const mainRoutes = menus2routes(menus, modules)
 
 /**
  * @type {Routes}
+ * @deprecated
  */
 export const routes = [
   {

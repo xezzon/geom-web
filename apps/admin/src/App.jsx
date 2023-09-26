@@ -1,17 +1,33 @@
 import { AuthProvider } from '@geom/components/AuthContext'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { routes } from './router'
+import { Outlet } from 'react-router-dom'
+import { GeomRouter } from '@geom/components/GeomRouter'
+import { RequireAuth } from '@geom/components/RequireAuth'
+import Layout from './components/Layout'
 
 function App() {
-  const router = createBrowserRouter(routes, {
-    // eslint-disable-next-line no-underscore-dangle
-    basename: window.__MICRO_APP_BASE_ROUTE__ ?? import.meta.env.GEOM_CONTEXT_PATH,
-  })
+  const routes = [
+    {
+      path: '/sign-up',
+      name: '注册',
+      lazy: () => import('@/pages/sign-up'),
+    },
+    {
+      path: '/sign-in',
+      name: '登录',
+      lazy: () => import('@/pages/sign-in'),
+    },
+  ]
 
   return (
     <>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <GeomRouter staticRoutes={routes}>
+          <RequireAuth>
+            <Layout>
+              <Outlet />
+            </Layout>
+          </RequireAuth>
+        </GeomRouter>
       </AuthProvider>
     </>
   )

@@ -27,5 +27,6 @@ module.exports = {
     semi: 0,
     'react/jsx-no-useless-fragment': 0,
     'max-classes-per-file': 0,
+    'quotes': 0,
   },
 }

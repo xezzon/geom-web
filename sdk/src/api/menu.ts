@@ -61,3 +61,11 @@ export function modifyMenu(client: Instance) {
       data: menu,
     })
 }
+
+export function deleteMenu(client: Instance) {
+  return async (id: string) =>
+    client.request({
+      url: `/menu/${id}`,
+      method: 'DELETE',
+    })
+}

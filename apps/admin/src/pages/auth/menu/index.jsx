@@ -30,6 +30,10 @@ function MenuPage() {
       })
       .then(fetchMenuTree)
   }
+  const deleteMenu = (id) => {
+    adminClient.deleteMenu(id)
+      .then(fetchMenuTree)
+  }
 
   useEffect(() => {
     fetchMenuTree()
@@ -43,7 +47,7 @@ function MenuPage() {
       key: 'index',
       title: '序号',
       render: (_value, _record, index) => index + 1,
-      width: '10%',
+      width: '15%',
     },
     {
       dataIndex: 'fullPath',
@@ -71,6 +75,19 @@ function MenuPage() {
             })}
           >
             新增
+          </Button>
+          <Button
+            type="link"
+            onClick={() => setRecord(record)}
+          >
+            修改
+          </Button>
+          <Button
+            type="link"
+            danger
+            onClick={() => deleteMenu(record.id)}
+          >
+            删除
           </Button>
         </Space>
       ),

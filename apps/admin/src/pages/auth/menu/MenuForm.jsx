@@ -2,13 +2,14 @@ import { forwardRef, useImperativeHandle } from 'react';
 import {
   Form, Input, TreeSelect, InputNumber, Switch,
 } from 'antd';
+import { adminClient } from '@/api';
 
 function MenuForm({ initData, menus }, ref) {
   const [formRef] = Form.useForm()
 
   const save = () => formRef.validateFields()
     .then((data) => {
-      if (record.id) {
+      if (initData.id) {
         return adminClient.modifyMenu(data)
       }
       return adminClient.addMenu(data)

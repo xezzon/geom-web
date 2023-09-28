@@ -52,7 +52,7 @@ function loadMenus(menus) {
 function MenuProvider({ children, getMenuTree }) {
   const [menus, setMenus] = useState(/** @type {Routes} */([]))
   const [loading, setLoading] = useState(true)
-  const { isLogin } = useAuth()
+  const authContext = useAuth()
 
   const fetchMenuTree = () => {
     setLoading(true)
@@ -72,7 +72,7 @@ function MenuProvider({ children, getMenuTree }) {
 
   useEffect(() => {
     fetchMenuTree()
-  }, [isLogin])
+  }, [authContext?.isLogin])
 
   return (
     <MenuContext.Provider value={value}>

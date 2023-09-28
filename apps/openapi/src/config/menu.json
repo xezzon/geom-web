@@ -1,18 +1,21 @@
 [
   {
-    "path": "/",
-    "name": "首页",
-    "key": "/home/index",
-    "icon": "ant-design:home-outlined",
-    "index": true
-  },
-  {
-    "path": "/group",
+    "path": "group",
+    "fullPath": "/group",
     "name": "团队信息",
-    "icon": "ant-design:team-outlined"
+    "icon": "ant-design:team-outlined",
+    "children": [
+      {
+        "path": "new",
+        "fullPath": "/group/new",
+        "component": "/group/NewGroupPage",
+        "hideInMenu": true
+      }
+    ]
   },
   {
-    "path": "/instance",
+    "path": "instance",
+    "fullPath": "/instance",
     "name": "已订阅接口",
     "icon": "ant-design:api-outlined"
   }

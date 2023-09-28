@@ -2,28 +2,28 @@ import {
   DownOutlined, LogoutOutlined, PlusOutlined, UserOutlined,
 } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
-import { GeomSvg } from '@geom/assets/img'
-import { filterDeep } from '@geom/util/tree';
+import { GeomSvg } from '@geom/assets/img';
+import { useAuth } from '@geom/components/AuthContext';
+import { useMenu } from '@geom/components/MenuContext';
 import {
   Avatar, Button, Divider, Dropdown, Space, Typography, theme,
 } from 'antd';
+import { cloneElement } from 'react';
 import {
   Link, Outlet, useLocation, useNavigate,
 } from 'react-router-dom';
-import { useAuth } from '@geom/components/AuthContext';
-import { cloneElement } from 'react';
 import { useGroup } from '@/components/GroupContext';
 import { adminClient } from '@/api';
 
 const { useToken } = theme
 
-function Layout({ routes }) {
+function Layout() {
   const { pathname } = useLocation()
   const { user, signOut } = useAuth()
   const { groups, toggleGroup, currentGroup } = useGroup()
   const { token } = useToken();
   const navigate = useNavigate()
-  const filterRoutes = filterDeep(routes, (arr) => arr)
+  const { menus } = useMenu()
 
   if (!currentGroup) {
     return <></>
@@ -43,7 +43,7 @@ function Layout({ routes }) {
       fixHeader
       title={import.meta.env.GEOM_TITLE}
       logo={GeomSvg}
-      route={{ path: '/', routes: filterRoutes }}
+      route={{ path: '/', routes: menus }}
       location={{ pathname }}
       menu={{ autoClose: false }}
       menuItemRender={(item, dom) => <Link to={item.path}>{dom}</Link>}

@@ -1,17 +1,30 @@
 import { AuthProvider } from '@geom/components/AuthContext'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { routes } from './router'
+import GeomRouter from "@geom/components/GeomRouter"
+import { MenuProvider } from "@geom/components/MenuContext"
+import { Outlet } from 'react-router-dom'
+import menus from '@/config/menu'
+import { GroupProvider } from '@/components/GroupContext'
+import Layout from '@/components/Layout'
+import { adminClient } from './api'
 
 function App() {
-  const router = createBrowserRouter(routes, {
-    // eslint-disable-next-line no-underscore-dangle
-    basename: window.__MICRO_APP_BASE_ROUTE__ ?? import.meta.env.GEOM_CONTEXT_PATH,
-  })
+  const getMe = () => adminClient
+    .getMe()
+    .then(({ data }) => data)
+  const getMenuTree = () => Promise.resolve(menus)
 
   return (
     <>
-      <AuthProvider>
-        <RouterProvider router={router} />
+      <AuthProvider getMe={getMe}>
+        <MenuProvider getMenuTree={getMenuTree}>
+          <GeomRouter>
+            <GroupProvider>
+              <Layout>
+                <Outlet />
+              </Layout>
+            </GroupProvider>
+          </GeomRouter>
+        </MenuProvider>
       </AuthProvider>
     </>
   )

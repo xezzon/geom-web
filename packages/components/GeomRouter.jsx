@@ -38,7 +38,7 @@ function menus2routes(menus) {
  * }} param0
  * @returns {React.JSX.Element}
  */
-function GeomRouter({ children, staticRoutes }) {
+function GeomRouter({ children, staticRoutes = [] }) {
   const { menus } = useMenu()
 
   /**

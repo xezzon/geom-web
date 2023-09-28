@@ -1,12 +1,12 @@
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
-import { GeomSvg } from '@geom/assets/img'
-import { useMenu } from '@geom/components/GeomRouter'
+import { GeomSvg } from '@geom/assets/img';
+import { useAuth } from '@geom/components/AuthContext';
+import { useMenu } from '@geom/components/MenuContext';
 import {
   Avatar, Dropdown, Space, Typography,
 } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '@geom/components/AuthContext';
 import { adminClient } from '@/api';
 
 function Layout() {

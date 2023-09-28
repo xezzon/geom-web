@@ -3,8 +3,9 @@
  */
 import { PlusOutlined } from '@ant-design/icons'
 import { PageContainer } from '@ant-design/pro-components'
+import { useRequest } from 'ahooks'
 import {
-  Button, Modal, Space, Table,
+  Button, Modal, Space, Spin, Table,
 } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { adminClient } from '@/api'
@@ -13,11 +14,14 @@ import MenuForm from './MenuForm'
 function MenuPage() {
   const [menus, setMenus] = useState(/** @type {Menu[]} */([]))
   const [record, setRecord] = useState(/** @type {Menu} */(null))
+  const {
+    loading, runAsync: _getMenuTree,
+  } = useRequest(adminClient.menuTree, { manual: true })
 
   const formRef = useRef((null))
 
   const fetchMenuTree = () => {
-    adminClient.menuTree()
+    _getMenuTree()
       .then(({ data }) => {
         setMenus(data)
       })
@@ -119,12 +123,14 @@ function MenuPage() {
           breadcrumb: {},
         }}
       >
-        <Table
-          columns={columns}
-          rowKey="id"
-          dataSource={menus}
-          title={Toolbar}
-        />
+        <Spin spinning={loading}>
+          <Table
+            columns={columns}
+            rowKey="id"
+            dataSource={menus}
+            title={Toolbar}
+          />
+        </Spin>
       </PageContainer>
       <Modal
         title="编辑菜单"

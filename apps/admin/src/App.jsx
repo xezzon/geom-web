@@ -1,8 +1,9 @@
 import { AuthProvider, RequireAuth } from '@geom/components/AuthContext'
+import GeomRouter from '@geom/components/GeomRouter'
+import { MenuProvider } from '@geom/components/MenuContext'
 import { Outlet } from 'react-router-dom'
-import { GeomRouter } from '@geom/components/GeomRouter'
-import Layout from './components/Layout'
 import { adminClient } from './api'
+import Layout from './components/Layout'
 
 function App() {
   const routes = [
@@ -21,13 +22,15 @@ function App() {
   return (
     <>
       <AuthProvider getMe={adminClient.getMe}>
-        <GeomRouter staticRoutes={routes}>
-          <RequireAuth>
-            <Layout>
-              <Outlet />
-            </Layout>
-          </RequireAuth>
-        </GeomRouter>
+        <MenuProvider getMenuTree={adminClient.menuTree}>
+          <GeomRouter staticRoutes={routes}>
+            <RequireAuth>
+              <Layout>
+                <Outlet />
+              </Layout>
+            </RequireAuth>
+          </GeomRouter>
+        </MenuProvider>
       </AuthProvider>
     </>
   )

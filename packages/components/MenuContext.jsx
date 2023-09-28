@@ -1,6 +1,10 @@
 /**
+ * @typedef {import('@xezzon/geom').Menu} Menu
  * @typedef {import('react-router-dom').RouteObject[]
-* | import('@ant-design/pro-components').MenuDataItem[]} Routes
+ * | import('@ant-design/pro-components').MenuDataItem[]} Routes
+ * @typedef {{
+ * menus: Routes,
+ * }} MenuContextProps
 */
 import { nest } from '@geom/util/tree'
 import { Icon } from '@iconify/react'
@@ -10,15 +14,19 @@ import {
 } from 'react'
 import { useAuth } from './AuthContext'
 
+/**
+ * @type {React.Context<MenuContextProps>}
+ */
 const MenuContext = createContext(null)
 
-/**
- * @returns {{menus: Routes}}
- */
 function useMenu() {
   return useContext(MenuContext)
 }
 
+/**
+ * @param {Menu[]} menus
+ * @returns {Routes}
+ */
 function loadMenus(menus) {
   return nest(menus, (menus) => menus.map((menu) => {
     // 图标
@@ -34,6 +42,13 @@ function loadMenus(menus) {
   }))
 }
 
+/**
+ * @param {{
+ * children: React.JSX.Element,
+ * getMenuTree: () => Promise<Menu>,
+ * }} param0
+ * @returns {React.JSX.Element}
+ */
 function MenuProvider({ children, getMenuTree }) {
   const [menus, setMenus] = useState(/** @type {Routes} */([]))
   const [loading, setLoading] = useState(true)
@@ -42,7 +57,7 @@ function MenuProvider({ children, getMenuTree }) {
   const fetchMenuTree = () => {
     setLoading(true)
     getMenuTree()
-      .then(({ data }) => loadMenus(data))
+      .then((data) => loadMenus(data))
       .then((menus) => {
         setMenus(menus)
       })

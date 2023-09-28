@@ -19,10 +19,17 @@ function App() {
     },
   ]
 
+  const getMe = () => adminClient
+    .getMe()
+    .then(({ data }) => data)
+  const getMenuTree = () => adminClient
+    .menuTree()
+    .then(({ data }) => data)
+
   return (
     <>
-      <AuthProvider getMe={adminClient.getMe}>
-        <MenuProvider getMenuTree={adminClient.menuTree}>
+      <AuthProvider getMe={getMe}>
+        <MenuProvider getMenuTree={getMenuTree}>
           <GeomRouter staticRoutes={routes}>
             <RequireAuth>
               <Layout>

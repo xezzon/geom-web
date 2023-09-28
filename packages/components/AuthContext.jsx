@@ -1,9 +1,23 @@
+/**
+ * @typedef {import('@xezzon/geom').User} User
+ * @typedef {import('@xezzon/geom').Token} Token
+ * @typedef {(token: Token, autoLogin: boolean) => void} signIn
+ * @typedef {{
+ * user: User,
+ * isLogin: boolean,
+ * signIn: signIn,
+ * signOut: () => void,
+ * }} AuthContextProps
+ */
 import { useLocalStorageState, useSessionStorageState } from 'ahooks'
 import {
   createContext, useContext, useEffect, useMemo, useState,
 } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 
+/**
+ * @type {React.Context<AuthContextProps>}
+ */
 const AuthContext = createContext(null)
 
 function useAuth() {
@@ -12,15 +26,22 @@ function useAuth() {
 
 /**
  * @param {{
- * getMe: (() => Promise)
+ * children: React.JSX.Element;
+ * getMe: () => Promise<User>;
  * }} param0
  */
 function AuthProvider({ children, getMe }) {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(/** @type {User} */(null))
   const [token1, setToken1] = useSessionStorageState('tokenValue')
   const [token2, setToken2] = useLocalStorageState('tokenValue')
+  /**
+   * @type {string}
+   */
   const token = useMemo(() => token2 || token1, [token1, token2])
 
+  /**
+   * @type {signIn}
+   */
   const signIn = ({ tokenName, tokenValue }, autoLogin) => {
     localStorage.setItem('tokenName', tokenName)
     if (autoLogin) {
@@ -44,9 +65,7 @@ function AuthProvider({ children, getMe }) {
     if (!token) {
       return;
     }
-    getMe()
-      .then((response) => response.data)
-      .then(setUser)
+    getMe().then(setUser)
   }, [token])
 
   return (
@@ -58,6 +77,10 @@ function AuthProvider({ children, getMe }) {
 
 /**
  * 判断登录态 未登录则跳转至登录页
+ * @param {{
+ * children: React.JSX.Element,
+ * navigateTo: string,
+ * }} param0
  */
 function RequireAuth({ children, navigateTo = '/sign-in' }) {
   const { user } = useAuth()

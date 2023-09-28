@@ -1,3 +1,6 @@
+/**
+ * @typedef {import('MenuContext').Routes} Routes
+ */
 import { nest } from '@geom/util/tree';
 import { useMemo } from 'react';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -28,9 +31,19 @@ function menus2routes(menus) {
   }))
 }
 
+/**
+ * @param {{
+ * children: React.JSX.Element,
+ * staticRoutes: Routes,
+ * }} param0
+ * @returns {React.JSX.Element}
+ */
 function GeomRouter({ children, staticRoutes }) {
   const { menus } = useMenu()
 
+  /**
+   * @type {Routes}
+   */
   const routes = useMemo(() => [
     ...staticRoutes,
     {

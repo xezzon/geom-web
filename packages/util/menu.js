@@ -6,6 +6,7 @@ import { nest } from './tree'
  * @param {Routes} menus
  * @param {Array<Promise>} modules
  * @returns {Routes}
+ * @deprecated
  */
 export function menus2routes(menus, modules) {
   return nest(menus, (menus) => menus.map((menu) => {

@@ -79,6 +79,7 @@ export interface Page<T> {
 export declare type Instance = AxiosInstance
 export declare type Response<T> = AxiosResponse<T>
 export declare type InstanceConfig = CreateAxiosDefaults
+export declare type PResponse<T> = Promise<Response<T>>
 export interface RequestInstance<T, R> {
-  (client: AxiosInstance): (...args: T) => Promise<AxiosResponse<R>>
+  (client: AxiosInstance): (...args: T) => PResponse<R>
 }

@@ -1,4 +1,4 @@
-import { Instance, Response } from '@/typings';
+import { Instance, PResponse, Response } from '@/typings';
 
 /**
  * 用户
@@ -19,6 +19,14 @@ export interface User {
   nickname: string,
 }
 
+/**
+ * 令牌
+ */
+export interface Token {
+  tokenName: string,
+  tokenValue: string,
+}
+
 export const register = (client: Instance) =>
   async (user: User) =>
     client.request({
@@ -35,7 +43,7 @@ export const getMe = (client: Instance) =>
     })
 
 export const login = (client: Instance) =>
-  async (user: User) =>
+  async (user: User): PResponse<Token> =>
     client.request({
       url: '/login',
       method: 'POST',

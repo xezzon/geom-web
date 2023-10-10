@@ -6,11 +6,10 @@ import {
 } from '@ant-design/pro-components'
 import { GeomSvg, SignInPng } from '@geom/assets/img'
 import { useAuth } from '@geom/components/AuthContext'
-import { useLocalStorageState, useSessionStorageState, useTitle } from 'ahooks'
+import { useTitle } from 'ahooks'
 import {
   Button, Divider, Space,
 } from 'antd'
-import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { adminClient } from '@/api'
 
@@ -21,44 +20,19 @@ import { adminClient } from '@/api'
 function SignInPage() {
   const location = useLocation()
   const { user, signIn } = useAuth()
-  const [token1, setToken1] = useSessionStorageState('tokenValue')
-  const [token2, setToken2] = useLocalStorageState('tokenValue')
-  const [loading, toggleLoading] = useState(true)
-  const token = useMemo(() => token2 || token1, [token1, token2])
-
-  useEffect(() => {
-    if (!token) {
-      toggleLoading(false)
-      return
-    }
-    toggleLoading(true)
-    adminClient.getMe()
-      .then((response) => response.data)
-      .then(signIn)
-      .finally(() => toggleLoading(false))
-  }, [token])
 
   useTitle('登录', { restoreOnUnmount: true })
 
   const login = (user) => {
     adminClient.login(user)
       .then((response) => response.data)
-      .then(({ tokenName, tokenValue }) => {
-        localStorage.setItem('tokenName', tokenName)
-        if (user.autoLogin) {
-          setToken2(tokenValue)
-        } else {
-          setToken1(tokenValue)
-        }
+      .then((data) => {
+        signIn(data, user.autoLogin)
       })
   }
 
   if (user) {
     return <Navigate to={location.state?.from?.pathname ?? -1} replace />
-  }
-
-  if (loading) {
-    return <></>
   }
 
   return (

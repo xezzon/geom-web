@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { InstanceConfig } from '@/typings';
-import { addOpenapi, openapiInstancePage, openapiPage } from './api/openapi';
+import {
+  addOpenapi, openapiInstancePage, openapiPage, subscribeOpenapi,
+} from './api/openapi';
 
 export default (config: InstanceConfig) => {
   const instance = axios.create(config)
@@ -19,5 +21,9 @@ export default (config: InstanceConfig) => {
      * 查询订阅的接口列表
      */
     openapiInstancePage: openapiInstancePage(instance),
+    /**
+     * 订阅接口
+     */
+    subscribeOpenapi: subscribeOpenapi(instance),
   }
 }

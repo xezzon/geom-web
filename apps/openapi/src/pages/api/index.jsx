@@ -3,11 +3,14 @@
  */
 import { PageContainer } from '@ant-design/pro-components'
 import CommonQuery from '@geom/components/CommonQuery'
-import { Button, Space, Table } from 'antd'
+import {
+  Button, Modal, Space, Table,
+} from 'antd'
 import { useRef, useState } from 'react'
 import { useRequest } from 'ahooks'
 import { useGroup } from '@/components/GroupContext'
 import { openapiClient } from '@/api'
+import OpenapiList from './OpenapiList'
 
 function OpenapiInstancePage() {
   const [dataSource, setDataSource] = useState(/** @type {OpenapiInstance} */([]))
@@ -18,8 +21,10 @@ function OpenapiInstancePage() {
   }))
   const [sorter] = useState([])
   const { currentGroup } = useGroup()
+  const [openapiListShow, setOpenapiListShow] = useState(false)
 
-  const commonQuery = useRef(null)
+  const commonQuery = useRef(/** @type {import('@geom/components/CommonQuery').default} */(null))
+  const openapiListRef = useRef(/** @type {import('./OpenapiList')} */(null))
 
   const {
     runAsync: fetchOpenapiPage,
@@ -34,6 +39,10 @@ function OpenapiInstancePage() {
         total: totalElements,
       })
     })
+  const subscribeOpenapi = () => openapiListRef.current
+    .save()
+    .then(() => setOpenapiListShow(false))
+    .then(fetchPage)
 
   /**
    * @type {import('antd').TableColumnProps<Openapi>[]}
@@ -66,6 +75,9 @@ function OpenapiInstancePage() {
     <div className="d-flex justify-content-between">
       <div />
       <Space>
+        <Button type="primary" onClick={() => setOpenapiListShow(true)}>
+          订阅
+        </Button>
         <CommonQuery
           columns={columns}
           filter={`groupId eq '${currentGroup?.id}'`}
@@ -94,6 +106,19 @@ function OpenapiInstancePage() {
           onChange={(pagination) => setPagination(pagination)}
         />
       </PageContainer>
+      <Modal
+        title="订阅接口"
+        open={openapiListShow}
+        destroyOnClose
+        okText="保存"
+        maskClosable={false}
+        onOk={subscribeOpenapi}
+        onCancel={() => setOpenapiListShow(false)}
+      >
+        <OpenapiList
+          ref={openapiListRef}
+        />
+      </Modal>
     </>
   )
 }

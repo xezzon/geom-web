@@ -23,6 +23,6 @@
     "path": "webhook",
     "fullPath": "/webhook",
     "name": "WEBHOOK",
-    "icon": "ant-design:node-index-outlined"
+    "icon": "material-symbols:webhook"
   }
 ]

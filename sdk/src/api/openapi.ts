@@ -11,7 +11,6 @@ export interface Openapi {
   id: string,
   code: string,
   name: string,
-  type: OpenapiType,
 }
 
 export interface OpenapiInstance {
@@ -44,4 +43,15 @@ export const openapiInstancePage = (client: Instance) =>
       url: '/openapi/instance',
       method: 'GET',
       params,
+    })
+
+export const subscribeOpenapi = (client: Instance) =>
+  async (openapiIds: string[], groupId: string) =>
+    client.request({
+      url: '/openapi/instance',
+      method: 'POST',
+      data: {
+        apiIds: openapiIds,
+        owner: groupId,
+      },
     })

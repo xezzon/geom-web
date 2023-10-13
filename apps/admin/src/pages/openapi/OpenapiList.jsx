@@ -48,23 +48,9 @@ function OpenapiList({ onEdit }, ref) {
       width: '10%',
     },
     {
-      dataIndex: 'code',
-      title: '编码',
-      valueType: 'text',
-    },
-    {
       dataIndex: 'name',
       title: '接口名称',
       valueType: 'text',
-    },
-    {
-      dataIndex: 'type',
-      title: '接口类型',
-      valueType: 'select',
-      options: () => ([
-        { code: 'RPC', label: 'RPC' },
-        { code: 'WEBHOOK', label: 'WEBHOOK' },
-      ]),
     },
   ]
 

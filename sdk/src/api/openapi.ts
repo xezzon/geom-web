@@ -9,7 +9,6 @@ export enum OpenapiType {
 
 export interface Openapi {
   id: string,
-  code: string,
   name: string,
 }
 
@@ -17,7 +16,6 @@ export interface OpenapiInstance {
   id: string,
   apiId: string,
   apiName: string,
-  callback: string,
   owner: string,
 }
 

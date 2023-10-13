@@ -1,5 +1,5 @@
 import { useRequest } from 'ahooks'
-import { Form, Input, Select } from 'antd'
+import { Form, Input } from 'antd'
 import { forwardRef, useImperativeHandle } from 'react'
 import { openapiClient } from '@/api'
 
@@ -39,33 +39,11 @@ function OpenapiEditor({ initData }, ref) {
         <Input disabled />
       </Form.Item>
       <Form.Item
-        name="code"
-        label="接口编码"
-        rules={[{ required: true }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
         name="name"
         label="接口名称"
         rules={[{ required: true }]}
       >
         <Input />
-      </Form.Item>
-      <Form.Item
-        name="type"
-        label="接口类型"
-        rules={[{ required: true }]}
-      >
-        <Select
-          fieldNames={{
-            value: 'code',
-          }}
-          options={[
-            { code: 'RPC', label: 'RPC' },
-            { code: 'WEBHOOK', label: 'WEBHOOK' },
-          ]}
-        />
       </Form.Item>
     </Form>
   )

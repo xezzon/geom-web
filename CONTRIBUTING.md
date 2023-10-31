@@ -9,8 +9,8 @@
 ```
 geom(geom)
 ├── apps  # 服务目录
-│   ├── geom-admin(geom-admin)  # 后台管理服务
-│   └── geom-openapi(geom-openapi)  # 开放平台服务
+│   ├── admin(geom-app-admin)  # 后台管理服务
+│   └── openapi(geom-app-openapi)  # 开放平台服务
 ├── eslint(eslint-config-geom)  # 共有的 eslint 配置
 ├── packages
 │   ├── assets(@geom/assets)  # 静态资源
